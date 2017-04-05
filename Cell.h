@@ -1,0 +1,65 @@
+#ifndef CELL_H
+#define CELL_H
+
+
+#include <memory>
+#include <string>
+#include <sstream>
+#include <iostream>
+
+class CellValueBase;
+
+class Cell{
+private :
+    std::unique_ptr<CellValueBase> *value;
+public :
+    Cell();
+    void readpointer();
+    void setpointer(std::string x);
+    void clearpointer();
+};
+
+//
+//
+class CellValueBase : public Cell {
+private:
+
+public:
+    CellValueBase();
+    virtual ~CellValueBase(){};
+    virtual std::string StringStreamValue(){};
+    virtual std::string stringValue(){};
+    virtual float floatValue(){};
+};
+
+
+//
+//
+template<typename T>
+class CellValue final : public CellValueBase {
+private:
+    T value;
+public:
+    CellValue(T initial_value)
+        : CellValueBase(), value(initial_value)
+        { };
+
+std::string StringStreamValue(){
+
+    return "test";
+};
+
+std::string stringValue(){
+    std::stringstream ss;
+    ss << value;
+    std::string s(ss.str());
+    return s;
+}
+
+float floatValue(){
+    return value;
+}
+
+};
+
+#endif // CELL_H
