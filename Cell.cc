@@ -3,24 +3,22 @@
 
 using namespace std;
 Cell::Cell(){
-    *value = nullptr;
+    value = nullptr;
 }
 
-void Cell::readpointer()
-{
-
-}
-
-void Cell::setpointer(string x)
-{
+std::unique_ptr<CellValueBase> Cell::readpointer(){
+//    return value;
 
 }
 
-void Cell::clearpointer()
-{
-
+void Cell::setpointer(string x){
+    CellValue<string> waarde(x);
+//    value(new CellValueBase(), (CellValueBase) waarde);
 }
 
+void Cell::clearpointer(){
+    value = nullptr;
+}
 
 CellValueBase::CellValueBase(){
 

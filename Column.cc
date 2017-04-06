@@ -6,7 +6,7 @@
 using namespace std;
 Column::Column(int size){
     for(int i =0; i < size; i++){
-        Cell x;
+        Cell() x;
         cellen.push_back(x);
     }
 }
