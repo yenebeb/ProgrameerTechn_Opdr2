@@ -9,8 +9,9 @@ class CellAdress
         int rijnummer;
     public:
         CellAdress();
-        CellAdress(std::string colnaam, int rijnmr);
-        void CreateFromReference(std::string celreferentie);
+        CellAdress(char colnaam, int rijnmr);
+        CellAdress(std::string celreferentie);
+        CellAdress CreateFromReference(std::string celreferentie);
         virtual ~CellAdress();
 
     protected:
