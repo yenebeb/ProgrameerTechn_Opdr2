@@ -7,13 +7,13 @@
 using namespace std;
 class Column {
 private:
-    vector<Cell> cellen;
+    vector<Cell*> cellen;
 public:
     //constructor, maakt x aantal cellen
     Column(int x);
-    Cell getCell(int x);
-    std::vector<Cell>::iterator begin();
-    std::vector<Cell>::iterator end();
+    Cell* getCell(int x);
+    std::vector<Cell*>::iterator begin();
+    std::vector<Cell*>::iterator end();
 };
 
 #endif // COLUMN_H
