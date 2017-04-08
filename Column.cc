@@ -9,12 +9,12 @@ Column::Column(int size){
     for(int i =0; i < size; i++){
         Cell cel;
         Cell c(cel);
-        cellen.push_back(c);
+        cellen.push_back(Cell());
     }
 }
 
 Cell Column::getCell(int x){
-    //return cellen.at(x);
+    return cellen.at(x);
 }
 
 vector<Cell>::iterator Column::begin(){
