@@ -1,5 +1,5 @@
 #include "Range.h"
-
+#include "CellAdress.h"
 Range::Range(){
 
 }

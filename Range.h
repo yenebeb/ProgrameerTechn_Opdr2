@@ -13,7 +13,7 @@ private:
     Sheet *sheet;
 public:
     Range();
-    Range(CellAdress, CellAdress, Sheet*);
+    Range(CellAdress x, CellAdress y , Sheet* p);
     RangeIterator begin();
     RangeIterator end();
 };

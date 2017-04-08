@@ -9,6 +9,11 @@ CellAdress::CellAdress(std::string celreferentie){
     kolomnummer = celreferentie.at(0);
     rijnummer = (int)celreferentie.at(1)+1;
 }
+
+CellAdress::CellAdress(){
+
+}
+
 CellAdress::~CellAdress(){
     //dtor
 }
