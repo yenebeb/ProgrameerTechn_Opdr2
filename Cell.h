@@ -11,11 +11,12 @@ class CellValueBase;
 
 class Cell{
 private :
-    std::unique_ptr<CellValueBase> value;
+    std::unique_ptr<CellValueBase> value ;
 public :
     Cell();
+    Cell(const Cell &c);
     std::unique_ptr<CellValueBase> readpointer();
-    void setpointer(std::string x);
+    void setpointer(std::string s);
     void clearpointer();
 };
 
@@ -57,8 +58,8 @@ std::string stringValue(){
 }
 
 float floatValue(){
-    float x = std::stof(value,std::string::size_type);
-    return x;
+    //float x = float(value);
+    return 5.3;
 }
 
 };
