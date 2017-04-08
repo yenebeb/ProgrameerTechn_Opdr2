@@ -18,9 +18,9 @@ Cell Column::getCell(int x){
 }
 
 vector<Cell>::iterator Column::begin(){
-    //return cellen.begin();
+    return cellen.begin();
 }
 
 vector<Cell>::iterator Column::end(){
-    //return cellen.end();
+    return cellen.end();
 }
