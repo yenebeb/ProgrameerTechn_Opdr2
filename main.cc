@@ -1,6 +1,7 @@
 #include "Sheet.h"
 #include <iostream>
 #include <sstream>
+#include "Range.h"
 int main(){
 
    Sheet sheet(5,5);
@@ -30,6 +31,13 @@ int main(){
    		}
    		cout << std::endl;
    }
- 
+   cout << std::endl;
+
+   Range range(CellAdress('B',2),CellAdress('C',3), &sheet);
+   int kolom = range.getBegin().getKolomnummer();
+   int rij = range.getBegin().getRijnummer();
+   Cell* z = range.getSheet()->getCell(kolom, rij);
+   cout << move(z->readpointer())->StringStreamValue();
+
 
 }

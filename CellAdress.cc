@@ -6,10 +6,11 @@ CellAdress::CellAdress(char colnaam, int rijnmr)
     rijnummer = rijnmr;
     //ctor
 }
+
 CellAdress::CellAdress(std::string celreferentie)
 {
     kolomnummer = celreferentie.at(0);
-    rijnummer = (int)celreferentie.at(1) + 1;
+    rijnummer = (int)celreferentie.at(1) - 1;
 }
 
 CellAdress::CellAdress()
@@ -32,5 +33,5 @@ int CellAdress::getRijnummer()
 CellAdress CreateFromReference(std::string celreferentie)
 {
     //TODO: throw exception
-    CellAdress Ca = CellAdress(celreferentie.at(0), (int)celreferentie.at(1) + 1);
+    CellAdress Ca = CellAdress(celreferentie.at(0), (int)celreferentie.at(1) - 1);
 }

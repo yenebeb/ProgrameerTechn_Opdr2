@@ -4,15 +4,15 @@ Range::Range()
 {
 }
 
-CellAdress& Range::getBegin()
+CellAdress Range::getBegin()
 {
     return BeginCellAdress;
 }
-CellAdress& Range::getEnd()
+CellAdress Range::getEnd()
 {
     return EndCellAdress;
 }
-Sheet* Range::getSheet()
+Sheet *Range::getSheet()
 {
     return sheet;
 }

@@ -15,12 +15,15 @@ class Range
 
   public:
     Range();
-    CellAdress &getBegin();
-    CellAdress &getEnd();
+    CellAdress getBegin();
+    CellAdress getEnd();
     Sheet *getSheet();
     Range(CellAdress x, CellAdress y, Sheet *p);
-    RangeIterator begin();
-    RangeIterator end();
+
+    typedef RangeIterator iterator;
+    
+    RangeIterator begin(void);
+    RangeIterator end(void);
 };
 #endif //RANGE_H
 
