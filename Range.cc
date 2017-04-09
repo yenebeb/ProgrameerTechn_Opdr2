@@ -1,9 +1,16 @@
 #include "Range.h"
 #include "CellAdress.h"
+#include <iostream>
+#include <sstream>
+#include <string>
 Range::Range()
 {
 }
+Range::Range(std::string rangeReferentie){
+    std::stringstream ss;
+    ss.str(rangeReferentie);
 
+}
 CellAdress Range::getBegin()
 {
     return BeginCellAdress;

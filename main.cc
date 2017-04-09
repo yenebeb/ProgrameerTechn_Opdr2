@@ -5,6 +5,9 @@
 int main()
 {
 
+
+
+	cout << endl << endl << endl;
     Sheet sheet(5, 5);
     int k = 0;
     for (int i = 0; i < 5; i++)

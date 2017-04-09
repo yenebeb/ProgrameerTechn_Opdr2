@@ -15,6 +15,7 @@ class Range
 
   public:
     Range();
+    Range(std::string rangeReferentie);
     CellAdress getBegin();
     CellAdress getEnd();
     Sheet *getSheet();
