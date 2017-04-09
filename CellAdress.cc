@@ -2,15 +2,15 @@
 
 CellAdress::CellAdress(char colnaam, int rijnmr)
 {
-    kolomnummer = (int)colnaam- 'A';
-    rijnummer = rijnmr;
+    kolomnummer = (int) colnaam- 'A';
+    rijnummer = rijnmr -1;
     //ctor
 }
 
 CellAdress::CellAdress(std::string celreferentie)
 {
     kolomnummer = celreferentie.at(0) - 'A';
-    rijnummer = (int)celreferentie.at(1) - 1;
+    rijnummer = celreferentie.at(1) - 1;
 }
 
 CellAdress::CellAdress()

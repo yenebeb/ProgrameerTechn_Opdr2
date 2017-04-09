@@ -23,3 +23,8 @@ Range::Range(CellAdress ca1, CellAdress ca2, Sheet *sh)
     EndCellAdress = ca2;
     sheet = sh;
 }
+
+RangeIterator Range::begin(void)
+{
+    return RangeIterator(*this, 0);
+}

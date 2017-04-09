@@ -2,45 +2,58 @@
 #include <iostream>
 #include <sstream>
 #include "Range.h"
-int main(){
+int main()
+{
 
-   Sheet sheet(5,5);
+    Sheet sheet(5, 5);
+    int k = 0;
+    for (int i = 0; i < 5; i++)
+    {
+	for (int j = 0; j < 5; j++)
+	{
+	    Cell *y = sheet.getCell(i, j);
+	    std::stringstream ss;
+	    ss << k;
+	    std::string s(ss.str());
+	    std::string x = std::string(s);
+	    k++;
+	    sheet.getCell(i, j)->setpointer(x);
+	}
+    }
+    /*
+    for (int i = 0; i < 5; i++)
+    {
+		for (int j = 0; j < 5; j++)
+		{
+	    	
+			Cell *z = sheet.getCell(i, j);
+			//  	vector<Column*>::iterator l = sheet.begin();
+			unique_ptr<CellValueBase> test = move(z->readpointer());
+			cout << test->stringValue() << " <<<< ";
+	    
+		}
+	cout << std::endl;
+    }
+    cout << std::endl;
+*/
+    Range range(CellAdress('B', 1), CellAdress('D', 3), &sheet);
+    int kolom = range.getBegin().getKolomnummer();
+    int rij = range.getBegin().getRijnummer();
 
-   for(int i = 0; i < 5; i++){
-   		for(int j = 0; j < 5; j++){
-   			    Cell* y = sheet.getCell(i,j);
-				std::stringstream ss;
-    			ss << i;
-    			std::string s(ss.str());
-   				std::string x = std::string(s);
-   			   	
-   			   	sheet.getCell(i,j)->setpointer(x);
-   			   
+    cout << kolom << rij<< endl;
 
-   		}
-   }
-  
+	int kolom1 = range.getEnd().getKolomnummer();
+    int rij1 = range.getEnd().getRijnummer();
 
-   for(int i = 0; i < 5; i++){
-   		for(int j = 0; j < 5; j++){
-   				Cell* z = sheet.getCell(i,j);
-   			  	vector<Column*>::iterator l = sheet.begin();
-   				unique_ptr<CellValueBase> test = move(z->readpointer());
-			   	cout << test->stringValue() << " <<<< ";
+	cout << kolom1 << rij1 << endl;
 
-   		}
-   		cout << std::endl;
-   }
-   cout << std::endl;
-
-   Range range(CellAdress('B',2),CellAdress('C',3), &sheet);
-   char kolom = range.getBegin().getKolomnummer();
-   int rij = range.getBegin().getRijnummer();
-
-   cout << (int) kolom << rij << endl;
-   Cell* z = range.getSheet()->getCell((int) kolom, rij);
-   unique_ptr<CellValueBase> test = move(z->readpointer());
-   cout << test->stringValue() << " <<<< ";
-
-
+    RangeIterator rir = range.begin();
+    for (int i = 0; i < 3; i++)
+    {
+	++rir;
+    }
+    Cell *z = &*rir; // wtf is dit werkt deze shit ####yolobolo
+    cout << rir.getOffset();
+    unique_ptr<CellValueBase> test = move(z->readpointer());
+    cout << "value=" << test->stringValue() << " <<<< ";
 }

@@ -25,5 +25,5 @@ Sheet.o: Sheet.cc Sheet.h Cell.cc Cell.h Column.cc Column.h
 Range.o: Range.cc Range.h Sheet.h Sheet.cc CellAdress.h CellAdress.cc
 	$(CC) $(CompileParms) Range.cc
 
-main.o: main.cc Sheet.cc Sheet.h
+main.o: main.cc Sheet.cc Sheet.h Range.cc Range.h
 	$(CC) $(CompileParms) main.cc

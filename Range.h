@@ -52,23 +52,29 @@ class RangeIterator : public std::iterator<std::input_iterator_tag, int>
 
         char m = offset % (k1 - k);
         int l = offset / (i1 - i);
-
         return range.getSheet()->getCell((int)(k + m), i + l);
     }
     Cell &operator*() const
     {
-        char k = range.getBegin().getKolomnummer();
-        char k1 = range.getEnd().getKolomnummer();
+        int k = range.getBegin().getKolomnummer();
+        int k1 = range.getEnd().getKolomnummer();
+
         int i = range.getBegin().getRijnummer();
         int i1 = range.getEnd().getRijnummer();
 
-        char m = offset % (k1 - k);
-        int l = offset / (i1 - i);
+        char m = offset / (k1 - k + 1);
+        int l = offset % (k1 - k + 1);
 
-        return *range.getSheet()->getCell((int)(k + m), i + l);
+        cout <<"m="<< (int) m << "l="<<l << endl;
+
+        return *range.getSheet()->getCell((int)(i + m), k + l);
     }
     RangeIterator &operator++()
     {
         ++offset;
+        return *this;
+    }
+    int getOffset(){
+        return offset;
     }
 };
