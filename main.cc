@@ -34,10 +34,13 @@ int main(){
    cout << std::endl;
 
    Range range(CellAdress('B',2),CellAdress('C',3), &sheet);
-   int kolom = range.getBegin().getKolomnummer();
+   char kolom = range.getBegin().getKolomnummer();
    int rij = range.getBegin().getRijnummer();
-   Cell* z = range.getSheet()->getCell(kolom, rij);
-   cout << move(z->readpointer())->StringStreamValue();
+
+   cout << (int) kolom << rij << endl;
+   Cell* z = range.getSheet()->getCell((int) kolom, rij);
+   unique_ptr<CellValueBase> test = move(z->readpointer());
+   cout << test->stringValue() << " <<<< ";
 
 
 }
