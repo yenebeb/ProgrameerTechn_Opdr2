@@ -3,9 +3,16 @@
 #include <sstream>
 #include "Range.h"
 #include "CellAdress.h"
+#include <curses.h>
+
 int main()
 {
+	
+	static const int lines(24);
+    static const int cols(80);
 
+//	initscr();
+//	noecho();
 
 	cout << endl << endl << endl;
     Sheet sheet(5, 5);
@@ -13,7 +20,7 @@ int main()
 
 	cout << "begin="<< a.getBegin().getKolomnummer() << a.getBegin().getRijnummer()<< endl;
 	cout << "end="<< a.getEnd().getKolomnummer() << a.getEnd().getRijnummer()<< endl;
-	
+
     int k = 0;
     for (int i = 0; i < 5; i++)
     {
@@ -59,7 +66,7 @@ int main()
     for (int i = 0; i < 8; i++)
     {
 	++rir;
-	Cell *z = &*rir; // wtf is dit werkt deze shit ####yolobolo
+	Cell *z = &*rir;
     cout << rir.getOffset();
     unique_ptr<CellValueBase> test = move(z->readpointer());
     cout << "value=" << test->stringValue() << " <<<< ";

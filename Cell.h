@@ -18,6 +18,7 @@ public :
     std::unique_ptr<CellValueBase> readpointer();
     void setpointer(std::string s);
     void clearpointer();
+    std::string getString();
 };
 
 //

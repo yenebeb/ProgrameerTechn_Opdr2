@@ -17,6 +17,10 @@ unique_ptr<CellValueBase> Cell::readpointer(){
 
 }
 
+string Cell::getString(){
+
+
+}
 void Cell::setpointer(string s){
     CellValueBase* y = new CellValue<string>(s);
     unique_ptr<CellValueBase> x(y);
