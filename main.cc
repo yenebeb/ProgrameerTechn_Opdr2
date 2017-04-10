@@ -2,13 +2,18 @@
 #include <iostream>
 #include <sstream>
 #include "Range.h"
+#include "CellAdress.h"
 int main()
 {
 
 
-
 	cout << endl << endl << endl;
     Sheet sheet(5, 5);
+	Range a("A2:B5",&sheet);
+
+	cout << "begin="<< a.getBegin().getKolomnummer() << a.getBegin().getRijnummer()<< endl;
+	cout << "end="<< a.getEnd().getKolomnummer() << a.getEnd().getRijnummer()<< endl;
+	
     int k = 0;
     for (int i = 0; i < 5; i++)
     {
@@ -51,12 +56,13 @@ int main()
 	cout << kolom1 << rij1 << endl;
 
     RangeIterator rir = range.begin();
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 8; i++)
     {
 	++rir;
-    }
-    Cell *z = &*rir; // wtf is dit werkt deze shit ####yolobolo
+	Cell *z = &*rir; // wtf is dit werkt deze shit ####yolobolo
     cout << rir.getOffset();
     unique_ptr<CellValueBase> test = move(z->readpointer());
     cout << "value=" << test->stringValue() << " <<<< ";
+    }
+    
 }

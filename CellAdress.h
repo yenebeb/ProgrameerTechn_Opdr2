@@ -13,7 +13,7 @@ class CellAdress
         CellAdress(std::string celreferentie);
         CellAdress CreateFromReference(std::string celreferentie);
         virtual ~CellAdress();
-        char getKolomnummer();
+        int getKolomnummer();
         int getRijnummer();
 
     protected:

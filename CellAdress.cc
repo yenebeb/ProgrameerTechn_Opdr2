@@ -1,16 +1,19 @@
 #include "CellAdress.h"
-
+#include <iostream>
+#include <sstream>
 CellAdress::CellAdress(char colnaam, int rijnmr)
 {
-    kolomnummer = (int) colnaam- 'A';
+    kolomnummer = colnaam - 'A';
     rijnummer = rijnmr -1;
     //ctor
 }
 
 CellAdress::CellAdress(std::string celreferentie)
 {
+
     kolomnummer = celreferentie.at(0) - 'A';
-    rijnummer = celreferentie.at(1) - 1;
+    std::string myString = celreferentie.substr(1,3);
+    rijnummer = atoi(myString.c_str()) -1;
 }
 
 CellAdress::CellAdress()
@@ -21,7 +24,7 @@ CellAdress::~CellAdress()
 {
     //dtor
 }
-char CellAdress::getKolomnummer()
+int CellAdress::getKolomnummer()
 {
     return kolomnummer;
 }
@@ -34,4 +37,6 @@ CellAdress CreateFromReference(std::string celreferentie)
 {
     //TODO: throw exception
     CellAdress Ca = CellAdress(celreferentie.at(0), (int)celreferentie.at(1) - 1);
+    std::cout <<"test" << std::endl << celreferentie.at(0) << (int)celreferentie.at(1) - 1 << std::endl;
+    return Ca;
 }
