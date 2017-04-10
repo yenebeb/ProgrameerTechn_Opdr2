@@ -36,7 +36,5 @@ int CellAdress::getRijnummer()
 CellAdress CreateFromReference(std::string celreferentie)
 {
     //TODO: throw exception
-    CellAdress Ca = CellAdress(celreferentie.at(0), (int)celreferentie.at(1) - 1);
-    std::cout <<"test" << std::endl << celreferentie.at(0) << (int)celreferentie.at(1) - 1 << std::endl;
-    return Ca;
+    return CellAdress(celreferentie);
 }
