@@ -66,7 +66,6 @@ class RangeIterator : public std::iterator<std::input_iterator_tag, int>
         char m = offset / (k1 - k + 1);
         int l = offset % (k1 - k + 1);
 
-        cout <<"m="<< (int) m << "l="<<l << endl;
 
         return *range.getSheet()->getCell((int)(i + m), k + l);
     }
