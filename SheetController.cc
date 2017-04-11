@@ -24,7 +24,7 @@ int SheetController::run(SheetView& s, Sheet& sheet){
             case '\n':
                 
                 //celbewerking
-
+            break;
 			case KEY_UP:
             case KEY_DOWN:
             case KEY_RIGHT:
@@ -70,6 +70,7 @@ void SheetController::moveCursor(int x, SheetView& s){
 
 void SheetController::celbewerking(int x, SheetView& s){
     //methode nieuwe window
+    //int x = getchar 
 
     while(x != '\n'){
 
