@@ -39,6 +39,7 @@ int main()
     s.tekenheaders();
     s.tekeninh(&sheet);
 
+    /*
     std::stringstream ss;
     int b = 80000;
     ss << b;
@@ -47,23 +48,30 @@ int main()
     sheet.getCell(2, 2)->setpointer(x);
 
     s.tekeninh(&sheet);
+    */
 
     WINDOW *win = s.getWindow();
-    attr_t old_attr; /* Huidige settings onthouden */
 
-    short old_pair;
-    wattr_get(win, &old_attr, &old_pair, NULL);
-
-    wmove(win, 0, 0);
-    //waddstr(win, "HELLO WORLD!!!");
-    wattr_set(win, old_attr, old_pair, NULL); /* Oude settings terugzetten */
-
-    Range a("A2:B5", &sheet);
+    wmove(win, 1, 10); // set cursor to start position
 
     /* Wacht tot er op enter wordt gedrukt */
     int ch;
+    keypad(win, TRUE);
+    refresh();
+    
     while ((ch = wgetch(win)) != '\n')
     {
+        int key = wgetch(win);
+        switch(key)
+        {
+            case KEY_UP:
+
+            break;
+            case KEY_DOWN:
+
+            break;
+        }
+        s.tekeninh(&sheet, cursor);
         //mousemask();
     }
 
@@ -71,6 +79,7 @@ int main()
     echo();
     endwin();
     return 0;
+    /*
     cout << endl
          << endl
          << endl;
@@ -90,7 +99,7 @@ int main()
             sheet.getCell(i, j)->setpointer(x);
         }
     }
-    /*
+    
     for (int i = 0; i < 5; i++)
     {
 		for (int j = 0; j < 5; j++)
@@ -105,7 +114,7 @@ int main()
 	cout << std::endl;
     }
     cout << std::endl;
-*/
+
     Range range(CellAdress('B', 1), CellAdress('D', 3), &sheet);
     int kolom = range.getBegin().getKolomnummer();
     int rij = range.getBegin().getRijnummer();
@@ -126,4 +135,5 @@ int main()
         unique_ptr<CellValueBase> test = move(z->readpointer());
         cout << "value=" << test->stringValue() << " <<<< ";
     }
+    */
 }

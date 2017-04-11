@@ -3,6 +3,7 @@
 
 #include <curses.h>
 #include "Sheet.h"
+#include <vector>
 class SheetView {
 public:
 	SheetView(int lines, int cols);
@@ -10,14 +11,14 @@ public:
 	void tekenheaders();
 	void tekeninh(Sheet* sheet);
 	void tekencurs();
-	void getcursor();
+	std::vector<int> getcursor();
 	void setcursor();
 	WINDOW* getWindow();
-
+	
 
 private:
 	WINDOW *win;
-
+	std::vector<int> cursor = {1,10};
 
 };
 

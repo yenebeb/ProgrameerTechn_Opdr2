@@ -21,6 +21,10 @@ void SheetView::tekenheaders()
     char topHeaderChar = 'A';
     const char *topHeader = &topHeaderChar;
 
+    attr_t old_attr; /* Huidige settings onthouden */
+    short old_pair;
+    wattr_get(win, &old_attr, &old_pair, NULL);
+
     wattron(win, A_STANDOUT);
     wmove(win, 0, 0);
     //teken de top header
@@ -52,6 +56,7 @@ void SheetView::tekenheaders()
         q++;
     }
     refresh();
+    wattr_set(win, old_attr, old_pair, NULL);
 }
 
 void SheetView::tekeninh(Sheet *sheet)
@@ -71,6 +76,15 @@ void SheetView::tekeninh(Sheet *sheet)
             }
         }
     }
+}
+
+std::vector<int> getcursor()
+{
+    return cursor;
+}
+
+void setcursor()
+{
 }
 
 WINDOW *SheetView::getWindow()
