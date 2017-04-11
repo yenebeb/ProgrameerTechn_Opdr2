@@ -13,6 +13,7 @@ public:
 	void tekencurs();
 	std::vector<int> getcursor();
 	void setcursor();
+	char getchar();
 	WINDOW* getWindow();
 	
 

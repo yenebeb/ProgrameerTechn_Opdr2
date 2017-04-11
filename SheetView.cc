@@ -87,6 +87,14 @@ void SheetView::setcursor()
 {
 }
 
+char Sheetview::getchar(){
+    int ch;
+    keypad(win, TRUE);
+    refresh();
+    ch = wgetch(win);
+    return ch;
+}
+
 WINDOW *SheetView::getWindow()
 {
     return win;
