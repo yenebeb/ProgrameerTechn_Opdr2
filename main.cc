@@ -39,7 +39,6 @@ int main()
     s.tekenheaders();
     s.tekeninh(&sheet);
 
-    
     std::stringstream ss;
     int b = 222222222;
     ss << b;
@@ -48,7 +47,6 @@ int main()
     sheet.getCell(2, 2)->setpointer(x);
 
     s.tekeninh(&sheet);
-    
 
     WINDOW *win = s.getWindow();
 
@@ -58,8 +56,9 @@ int main()
     int key;
     keypad(win, TRUE);
     refresh();
+    cbreak();
 
-    while ((key = wgetch(win)) != '\n')
+    while ((key = wgetch(win)) != 'q')
     {
         //int key = wgetch(win);
         std::vector<int> vec;
@@ -91,6 +90,44 @@ int main()
             if (vec.at(1) > 0)
                 vec.at(1)--;
             s.setCursor(vec);
+            break;
+        case '\n':
+            vec = s.getCursor();
+            WINDOW *popup = newwin(3, 19, 1, 1);
+            mvwin(popup, vec.at(0), vec.at(1) * 8 + 3);
+            wmove(popup, 1, 1);
+            wborder(popup, '|', '|', '-', '-', '+', '+', '+', '+');
+            wrefresh(popup);
+            // input van user naar cell en display ook pak oude en plaats
+
+            string input = "";
+            Cell *d = sheet.getCell(vec.at(0), vec.at(1));
+            string inhoud = d->getString();
+            wmove(popup, 1, 1);
+            const char *c = inhoud.c_str();
+            waddstr(popup, c);
+            wrefresh(popup);
+            while ((key = wgetch(win)) != '\n')
+            {
+                wmove(popup, 1, 1);
+                c ="                 ";
+                waddstr(popup, c);
+                if (key == KEY_BACKSPACE)
+                {
+                    if(inhoud.size())
+                    inhoud.pop_back();
+                }
+                else if(inhoud.size()< 17)
+                {
+                    inhoud += key;
+                }
+                c = inhoud.c_str();
+                wmove(popup, 1, 1);
+                waddstr(popup, c);
+                wrefresh(popup);
+            }
+            sheet.getCell(vec.at(0), vec.at(1))->setpointer(inhoud);
+            s.tekenheaders();
             break;
         }
         s.tekeninh(&sheet);

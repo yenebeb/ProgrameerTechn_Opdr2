@@ -31,7 +31,7 @@ void SheetView::tekenheaders()
     for (int j = 0; j < 80; j++)
     {
         wmove(win, 0, j);
-        if (j % 8 == 2 && j > 2)
+        if (j % 8 == 4 && j > 4)
         {
             waddstr(win, topHeader);
             topHeaderChar++;
