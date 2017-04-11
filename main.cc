@@ -16,12 +16,14 @@ int main()
     noecho();
 
     /* Maak een venster, grootte lines x cols */
-    WINDOW *win = newwin(lines, cols, 10, 10);
+    WINDOW *win = newwin(lines, cols, 0, 0);
     keypad(win, TRUE); /* Enable keypad input */
-
+    attr_t old_attr; /* Huidige settings onthouden */
+    short old_pair;
     int q = 1;
     for(int i = 0; i <= 24; i++){
         for(int j = 0; j <= 80; j++){
+            wattron(win, A_STANDOUT);    
             wmove(win, i, j);
 
             if(i ==0){
@@ -35,9 +37,9 @@ int main()
 
             }
             else if(j == 0){
-
+                wattr_set(win, old_attr, old_pair, NULL); /* Oude settings terugzetten */
                 string s = to_string(q);
-                printw("test"); // << test printw
+                //printw("test"); // << test printw
                 const char* x = s.c_str();
                 waddstr(win, x);
                 q++;
@@ -60,13 +62,12 @@ int main()
     /* Verplaats cursor rij 10, kolom 20 */
    
     /* Nogmaals, maar nu op een achtergrond */
-    attr_t old_attr; /* Huidige settings onthouden */
-    short old_pair;
+ 
     wattr_get(win, &old_attr, &old_pair, NULL);
 
     wattron(win, A_STANDOUT);
     wmove(win, 0, 0);
-    waddstr(win, "HELLO WORLD!!!");
+    //waddstr(win, "HELLO WORLD!!!");
     wattr_set(win, old_attr, old_pair, NULL); /* Oude settings terugzetten */
     Sheet sheet(5, 5);
 
