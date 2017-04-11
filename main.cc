@@ -55,20 +55,36 @@ int main()
     wmove(win, 1, 10); // set cursor to start position
 
     /* Wacht tot er op enter wordt gedrukt */
-    int ch;
+    int key;
     keypad(win, TRUE);
     refresh();
     
-    while ((ch = wgetch(win)) != '\n')
+    while ((key = wgetch(win)) != '\n')
     {
-        int key = wgetch(win);
+        //int key = wgetch(win);
+        std::vector<int> vec;
         switch(key)
         {
-            case KEY_UP:
             
+            case KEY_UP:
+            vec = s.getCursor();
+            if(vec.at(0)>0) vec.at(0)--;
+            s.setCursor(vec);
             break;
             case KEY_DOWN:
-
+            vec = s.getCursor();
+            if(vec.at(0)<22) vec.at(0)++;
+            s.setCursor(vec);
+            break;
+            case KEY_RIGHT:
+            vec = s.getCursor();
+            if(vec.at(1)<8) vec.at(1)++;
+            s.setCursor(vec);
+            break;
+            case KEY_LEFT:
+            vec = s.getCursor();
+            if(vec.at(1)>0) vec.at(1)--;
+            s.setCursor(vec);
             break;
         }
         s.tekeninh(&sheet);

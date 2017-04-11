@@ -85,14 +85,16 @@ void SheetView::tekeninh(Sheet *sheet)
     }
 }
 
-std::vector<int> SheetView::getcursor()
+std::vector<int> SheetView::getCursor()
 {
     return cursor;
 }
 
-void SheetView::setcursor(std::vector<int> cur)
+void SheetView::setCursor(std::vector<int> cur)
 {
     cursor = cur;
+    wmove(win, 1+cur.at(0), 10+cur.at(1)*8);
+    refresh();
 }
 
 WINDOW *SheetView::getWindow()
