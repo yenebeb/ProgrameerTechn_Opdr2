@@ -25,6 +25,7 @@ string Cell::getString()
     y = value.get();
     return y->stringValue();
 }
+
 void Cell::setpointer(string s)
 {
     CellValueBase *y = new CellValue<string>(s);

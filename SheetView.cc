@@ -90,10 +90,10 @@ std::vector<int> SheetView::getCursor()
     return cursor;
 }
 
-void SheetView::setCursor(std::vector<int> cur)
+void SheetView::setCursor(std::vector<int> cur, WINDOW* wine)
 {
     cursor = cur;
-    wmove(win, 1+cur.at(0), 10+cur.at(1)*8);
+    wmove(wine, 1+cur.at(0), 10+cur.at(1)*8);
     refresh();
 }
 

@@ -52,7 +52,7 @@ int main()
 
     WINDOW *win = s.getWindow();
 
-    wmove(win, 1, 10); // set cursor to start position
+    wmove(win, 1, 20); // set cursor to start position
 
     /* Wacht tot er op enter wordt gedrukt */
     int key;
@@ -69,23 +69,24 @@ int main()
             case KEY_UP:
             vec = s.getCursor();
             if(vec.at(0)>0) vec.at(0)--;
-            s.setCursor(vec);
+            s.setCursor(vec, win);
             break;
             case KEY_DOWN:
             vec = s.getCursor();
             if(vec.at(0)<22) vec.at(0)++;
-            s.setCursor(vec);
+            s.setCursor(vec, win);
             break;
             case KEY_RIGHT:
             vec = s.getCursor();
             if(vec.at(1)<8) vec.at(1)++;
-            s.setCursor(vec);
+            s.setCursor(vec, win);
             break;
             case KEY_LEFT:
             vec = s.getCursor();
             if(vec.at(1)>0) vec.at(1)--;
-            s.setCursor(vec);
+            s.setCursor(vec, win);
             break;
+
         }
         s.tekeninh(&sheet);
         //mousemask();
