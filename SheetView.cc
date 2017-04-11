@@ -48,6 +48,12 @@ void SheetView::tekenheaders(){
                 q++;
                 refresh();
             }
+            else if((j-2) % 8 == 0 && j > 7){
+                    string test  = "test";
+                    const char *c = test.c_str();
+                    waddstr(win,c);
+                    refresh;
+            }
             else if(i==5 && j == 30) {
                 ostringstream os;
                 os << "test";

@@ -25,18 +25,15 @@ int main()
         }
     }
     
-    Cell *c = sheet.getCell(2,2);
-    cout << c->readpointer()->stringValue() << endl;
+   // Cell *c = sheet.getCell(2,2);
+   // cout << c->getString();
 
-
-  //  return 0;
 
 
     
     // ui
     static const int lines(24);
     static const int cols(160);
-    cout << "TEST " ;
 
 
     SheetView s(lines, cols);
