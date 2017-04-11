@@ -21,6 +21,7 @@ int main()
     attr_t old_attr; /* Huidige settings onthouden */
     short old_pair;
     int q = 1;
+    wattr_get(win, &old_attr, &old_pair, NULL);
     for(int i = 0; i <= 24; i++){
         for(int j = 0; j <= 80; j++){
             wattron(win, A_STANDOUT);    
@@ -63,7 +64,7 @@ int main()
    
     /* Nogmaals, maar nu op een achtergrond */
  
-    wattr_get(win, &old_attr, &old_pair, NULL);
+   // wattr_get(win, &old_attr, &old_pair, NULL);
 
     wattron(win, A_STANDOUT);
     wmove(win, 0, 0);
