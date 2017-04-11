@@ -2,11 +2,12 @@
 #define SHEETVIEW_H
 
 #include <curses.h>
+#include "Sheet.h"
 class SheetView {
 public:
 	SheetView(int lines, int cols);
 	//~SheetView();
-	void tekenheaders();
+	void tekenheaders(Sheet* sheet);
 	void tekeninh();
 	void tekencurs();
 	void getcursor();

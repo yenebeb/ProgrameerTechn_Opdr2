@@ -3,7 +3,7 @@
 #include "SheetView.h"
 #include <iostream>
 #include <sstream>
-
+#include "Sheet.h"
 
 using namespace std;
 SheetView::SheetView(int lines, int cols){
@@ -15,7 +15,7 @@ SheetView::SheetView(int lines, int cols){
 
 }
 
-void SheetView::tekenheaders(){
+void SheetView::tekenheaders(Sheet* sheet){
     int q = 1;
     char topHeaderChar = 'A';
     const char *topHeader = &topHeaderChar;
@@ -49,19 +49,12 @@ void SheetView::tekenheaders(){
                 refresh();
             }
             else if((j-2) % 8 == 0 && j > 7){
-                    string test  = "test";
+
+                    Cell *d = sheet->getCell(i-1,(j-8)/8);
+                    string test  = d->getString();
                     const char *c = test.c_str();
                     waddstr(win,c);
                     refresh;
-            }
-            else if(i==5 && j == 30) {
-                ostringstream os;
-                os << "test";
-                string begin = os.str();
-                const char *c = begin.c_str();
-                waddstr(win, c);
-
-                refresh();            
             }
         }
     }
