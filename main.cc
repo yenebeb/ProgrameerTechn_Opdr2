@@ -39,16 +39,16 @@ int main()
     s.tekenheaders();
     s.tekeninh(&sheet);
 
-    /*
+    
     std::stringstream ss;
-    int b = 80000;
+    int b = 222222222;
     ss << b;
     std::string f(ss.str());
     std::string x = std::string(f);
     sheet.getCell(2, 2)->setpointer(x);
 
     s.tekeninh(&sheet);
-    */
+    
 
     WINDOW *win = s.getWindow();
 
@@ -58,32 +58,38 @@ int main()
     int key;
     keypad(win, TRUE);
     refresh();
-    
+
     while ((key = wgetch(win)) != '\n')
     {
         //int key = wgetch(win);
         std::vector<int> vec;
-        switch(key)
+        switch (key)
         {
-            
-            case KEY_UP:
+
+        case KEY_UP:
             vec = s.getCursor();
-            if(vec.at(0)>0) vec.at(0)--;
+            if (vec.at(0) > 0)
+                vec.at(0)--;
+            s.setCursor(vec);
+            move(1, 10);
+            refresh();
+            break;
+        case KEY_DOWN:
+            vec = s.getCursor();
+            if (vec.at(0) < 22)
+                vec.at(0)++;
             s.setCursor(vec);
             break;
-            case KEY_DOWN:
+        case KEY_RIGHT:
             vec = s.getCursor();
-            if(vec.at(0)<22) vec.at(0)++;
+            if (vec.at(1) < 8)
+                vec.at(1)++;
             s.setCursor(vec);
             break;
-            case KEY_RIGHT:
+        case KEY_LEFT:
             vec = s.getCursor();
-            if(vec.at(1)<8) vec.at(1)++;
-            s.setCursor(vec);
-            break;
-            case KEY_LEFT:
-            vec = s.getCursor();
-            if(vec.at(1)>0) vec.at(1)--;
+            if (vec.at(1) > 0)
+                vec.at(1)--;
             s.setCursor(vec);
             break;
         }

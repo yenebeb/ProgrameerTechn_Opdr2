@@ -12,10 +12,10 @@ public:
 	void tekeninh(Sheet* sheet);
 	void tekencurs();
 
-	std::vector<int> getcursor();
+	std::vector<int> getCursor();
 	char getchar();
-	void setcursor(std::vector<int> vec);
-	
+	void setCursor(std::vector<int> vec);
+
 	WINDOW* getWindow();
 	
 

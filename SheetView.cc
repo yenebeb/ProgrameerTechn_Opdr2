@@ -28,7 +28,7 @@ void SheetView::tekenheaders()
     wattron(win, A_STANDOUT);
     wmove(win, 0, 0);
     //teken de top header
-    for (int j = 0; j <= 80; j++)
+    for (int j = 0; j < 80; j++)
     {
         wmove(win, 0, j);
         if (j % 8 == 2 && j > 2)
@@ -66,23 +66,34 @@ void SheetView::tekeninh(Sheet *sheet)
     wattr_get(win, &old_attr, &old_pair, NULL);
     for (int i = 0; i < 24; i++)
     {
-        for (int j = 0; j <= 80; j++)
+        for (int j = 0; j < 80; j++)
         {
             wmove(win, i, j);
-            if ((j - 2) % 8 == 0 && j > 7 && i > 0)
+            if ((j) % 8 == 0 && j > 6 && i > 0)
             {
-                if(cursor.at(0)+1 == i && cursor.at(1)*8+10 == j){
+                if (cursor.at(0) + 1 == i && cursor.at(1) * 8 + 8 == j)
+                {
                     wattron(win, A_STANDOUT);
                 }
                 Cell *d = sheet->getCell(i - 1, (j - 8) / 8);
-                string test = d->getString();
-                const char *c = test.c_str();
+                string inhoud = d->getString().substr(0,8); //ophalen en afkappen na 8 tekens
+                
+                for(int k = inhoud.size(); k < 6; k++){ // vult de string met spaties aan de voorkant als die minder dan 6 characters lang is
+                    inhoud = " "+ inhoud;
+                }
+
+                for (int k = inhoud.size(); k < 8; k++) // vult de string met spaties aan de achterkant als die minder dan 8 characters lang is
+                {
+                    inhoud += " ";
+                }
+                const char *c = inhoud.c_str();
                 waddstr(win, c);
                 wattr_set(win, old_attr, old_pair, NULL);
                 refresh();
             }
         }
     }
+    wmove(win, 1 + cursor.at(0), 8 + cursor.at(1) * 8);
 }
 
 std::vector<int> SheetView::getCursor()
@@ -93,11 +104,12 @@ std::vector<int> SheetView::getCursor()
 void SheetView::setCursor(std::vector<int> cur)
 {
     cursor = cur;
-    wmove(win, 1+cur.at(0), 10+cur.at(1)*8);
+    wmove(win, 1 + cur.at(0), 8 + cur.at(1) * 8);
     refresh();
 }
 
-char SheetView::getchar(){
+char SheetView::getchar()
+{
     int ch;
     keypad(win, TRUE);
     refresh();
