@@ -20,38 +20,38 @@ void SheetView::tekenheaders()
     int q = 1;
     char topHeaderChar = 'A';
     const char *topHeader = &topHeaderChar;
-    {
-        wattron(win, A_STANDOUT);
-        wmove(win, 0, 0);
 
-        for (int j = 0; j <= 80; j++)
+    wattron(win, A_STANDOUT);
+    wmove(win, 0, 0);
+    //teken de top header
+    for (int j = 0; j <= 80; j++)
+    {
+        wmove(win, 0, j);
+        if (j % 8 == 2 && j > 2)
         {
-            wmove(win, 0, j);
-            if (j % 8 == 2 && j > 2)
-            {
-                waddstr(win, topHeader);
-                topHeaderChar++;
-            }
-            else if (j > 7)
-            {
-                waddstr(win, " ");
-            }
+            waddstr(win, topHeader);
+            topHeaderChar++;
         }
-        for (int i = 1; i < 24; i++)
+        else if (j > 7)
         {
-            wmove(win, i, 0);
-            string s = "   ";
-            s += to_string(q);
-            for (int k = s.size(); k < 8; k++)
-            {
-                s += " ";
-            }
-            const char *x = s.c_str();
-            waddstr(win, x);
-            q++;
-            refresh();
+            waddstr(win, " ");
         }
     }
+    //teken side header
+    for (int i = 1; i < 24; i++)
+    {
+        wmove(win, i, 0);
+        string s = "   ";
+        s += to_string(q);
+        for (int k = s.size(); k < 8; k++)
+        {
+            s += " ";
+        }
+        const char *x = s.c_str();
+        waddstr(win, x);
+        q++;
+    }
+    refresh();
 }
 
 void SheetView::tekeninh(Sheet *sheet)
