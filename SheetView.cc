@@ -78,12 +78,12 @@ void SheetView::tekeninh(Sheet *sheet)
     }
 }
 
-std::vector<int> getcursor()
+std::vector<int> SheetView::getcursor()
 {
     return cursor;
 }
 
-void setcursor()
+void SheetView::setcursor()
 {
 }
 

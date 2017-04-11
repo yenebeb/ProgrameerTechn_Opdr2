@@ -71,7 +71,7 @@ int main()
 
             break;
         }
-        s.tekeninh(&sheet, cursor);
+        s.tekeninh(&sheet);
         //mousemask();
     }
 
