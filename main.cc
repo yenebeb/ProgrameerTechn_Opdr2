@@ -3,6 +3,7 @@
 #include <sstream>
 #include "Range.h"
 #include "CellAdress.h"
+#include "SheetView.h"
 #include <curses.h>
 
 int main()
@@ -35,87 +36,23 @@ int main()
     // ui
     static const int lines(24);
     static const int cols(160);
+    cout << "TEST " ;
 
-    initscr();
-    raw();
-    noecho();
 
-    /* Maak een venster, grootte lines x cols */
-    WINDOW *win = newwin(lines, cols, 0, 0);
-    keypad(win, TRUE); /* Enable keypad input */
-    attr_t old_attr;   /* Huidige settings onthouden */
+    SheetView s(lines, cols);
+    s.tekenheaders();
+    WINDOW *win = s.getWindow();
+    attr_t old_attr; /* Huidige settings onthouden */
+
     short old_pair;
-    int q = 1;
     wattr_get(win, &old_attr, &old_pair, NULL);
-    char topHeaderChar = 'A';
-    const char *topHeader = &topHeaderChar;
-    for (int i = 0; i < 24; i++)
-    {
-        for (int j = 0; j <= 80; j++)
-        {
-            wattron(win, A_STANDOUT);
-            wmove(win, i, j);
 
-            if (i == 0)
-            {
-                if (j % 8 == 2 && j > 2)
-                {
-                    waddstr(win, topHeader);
-                    topHeaderChar++;
-                }
-                else if (j > 7)
-                {
-                    waddstr(win, " ");
-                }
-                refresh();
-            }
-            else if (j == 0)
-            {
-                //     wattr_set(win, old_attr, old_pair, NULL); /* Oude settings terugzetten */
-                string s = "   ";
-                s += to_string(q);
-                for (int k = s.size(); k < 8; k++)
-                {
-                    s += " ";
-                }
-                //printw("test"); // << test printw
-                const char *x = s.c_str();
-                waddstr(win, x);
-                q++;
-                refresh();
-            }
-            else if (i == 5 && j == 30)
-            {
-                ostringstream os;
-                os << "test";
-                string begin = os.str();
-                const char *c = begin.c_str();
-                waddstr(win, c);
-
-                refresh();
-            }
-        }
-        printw("\n");
-    }
-    /* Verplaats cursor rij 10, kolom 20 */
-
-    /* Nogmaals, maar nu op een achtergrond */
-
-    // wattr_get(win, &old_attr, &old_pair, NULL);
-
-    wattron(win, A_STANDOUT);
     wmove(win, 0, 0);
     //waddstr(win, "HELLO WORLD!!!");
     wattr_set(win, old_attr, old_pair, NULL); /* Oude settings terugzetten */
 
 
     Range a("A2:B5", &sheet);
-    /* 
-    ostringstream os;
-    os << "begin= "  << a.getBegin().getKolomnummer() << a.getBegin().getRijnummer();
-    string begin = os.str();
-    const char *c = begin.c_str();
-    waddstr(win, c); */
 
     /* Wacht tot er op enter wordt gedrukt */
     int ch;
