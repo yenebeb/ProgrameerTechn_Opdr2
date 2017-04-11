@@ -22,24 +22,31 @@ int main()
     short old_pair;
     int q = 1;
     wattr_get(win, &old_attr, &old_pair, NULL);
+    char topHeaderChar = 'A';
+    const char *topHeader = &topHeaderChar;
     for(int i = 0; i <= 24; i++){
         for(int j = 0; j <= 80; j++){
             wattron(win, A_STANDOUT);    
             wmove(win, i, j);
 
             if(i ==0){
-                if(j%10 == 0){
-                    waddstr(win,"a");
+                if(j%8 == 2 && j > 2){
+                    waddstr(win, topHeader);
+                    topHeaderChar++;
                 }
-                else{
+                else if(j > 7){
                     waddstr(win, " ");
                 }
                 refresh();
 
             }
             else if(j == 0){
-                wattr_set(win, old_attr, old_pair, NULL); /* Oude settings terugzetten */
-                string s = to_string(q);
+           //     wattr_set(win, old_attr, old_pair, NULL); /* Oude settings terugzetten */
+                string s = "   ";
+                s += to_string(q);
+                for(int k = s.size(); k < 8; k++){
+                    s += " ";
+                }
                 //printw("test"); // << test printw
                 const char* x = s.c_str();
                 waddstr(win, x);
