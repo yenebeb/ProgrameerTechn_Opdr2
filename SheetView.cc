@@ -4,7 +4,7 @@
 #include "Sheet.h"
 #include <iostream>
 #include <sstream>
-
+#include "Sheet.h"
 
 using namespace std;
 SheetView::SheetView(int lines, int cols){
@@ -51,13 +51,21 @@ void SheetView::tekenheaders(){
     }
 }
 
-void SheetView::tekeninh(Sheet sheet){
+void SheetView::tekeninh(Sheet* sheet){
     for(int i = 0; i < 24; i++){
         for(int j = 0; j <= 80; j++){
             wmove(win, i, j);
             if(i != 0 && (j-2) % 8 == 0 && j > 7){
-                Cell *c = sheet.getCell(2,2);
+                Cell *c = sheet->getCell(2,2);
                 string begin = c->getString();
+            }
+            else if((j-2) % 8 == 0 && j > 7){
+
+                    Cell *d = sheet->getCell(i-1,(j-8)/8);
+                    string test  = d->getString();
+                    const char *c = test.c_str();
+                    waddstr(win,c);
+                    refresh();
             }
         }
     }

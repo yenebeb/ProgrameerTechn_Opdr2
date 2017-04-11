@@ -8,7 +8,7 @@ public:
 	SheetView(int lines, int cols);
 	//~SheetView();
 	void tekenheaders();
-	void tekeninh(Sheet sheet);
+	void tekeninh(Sheet* sheet);
 	void tekencurs();
 	void getcursor();
 	void setcursor();

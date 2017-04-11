@@ -11,13 +11,13 @@
 int main()
 {
     // sheet initialization
-    Sheet sheet(5, 5);
+    Sheet sheet(24, 80);
     int k = 0;
-    for (int i = 0; i < 5; i++)
+    for (int i = 0; i < 24; i++)
     {
-        for (int j = 0; j < 5; j++)
+        for (int j = 0; j < 80; j++)
         {
-            Cell *y = sheet.getCell(i, j);
+            //     Cell *y = sheet.getCell(i, j);
             std::stringstream ss;
             ss << k;
             std::string s(ss.str());
@@ -27,21 +27,27 @@ int main()
         }
     }
 
-    
-   // Cell *c = sheet.getCell(2,2);
-   // cout << c->getString();
+    //Cell *c = sheet.getCell(2,2);
+    //cout << c->getString();
 
-
-
-    
     // ui
     static const int lines(24);
     static const int cols(160);
 
-
     SheetView s(lines, cols);
+
     s.tekenheaders();
-    s.tekeninh(sheet);
+    s.tekeninh(&sheet);
+
+    std::stringstream ss;
+    int b = 80000;
+    ss << b;
+    std::string f(ss.str());
+    std::string x = std::string(f);
+    sheet.getCell(2, 2)->setpointer(x);
+
+    s.tekeninh(&sheet);
+
     WINDOW *win = s.getWindow();
     attr_t old_attr; /* Huidige settings onthouden */
 
@@ -51,7 +57,6 @@ int main()
     wmove(win, 0, 0);
     //waddstr(win, "HELLO WORLD!!!");
     wattr_set(win, old_attr, old_pair, NULL); /* Oude settings terugzetten */
-
 
     Range a("A2:B5", &sheet);
 
@@ -71,7 +76,6 @@ int main()
          << endl;
 
     cout << "end=" << a.getEnd().getKolomnummer() << a.getEnd().getRijnummer() << endl;
-
 
     for (int i = 0; i < 5; i++)
     {
