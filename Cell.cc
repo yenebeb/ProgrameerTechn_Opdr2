@@ -23,6 +23,9 @@ string Cell::getString()
 {
     CellValueBase *y;
     y = value.get();
+    if(y == nullptr){
+        return "";
+    }
     return y->stringValue();
 }
 

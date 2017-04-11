@@ -14,9 +14,8 @@ public:
 	void tekencurs();
 
 	std::vector<int> getCursor();
-	char getchar();
-	void setCursor(std::vector<int> vec, WINDOW* win);
-	
+	int getchar();
+	void setCursor(std::vector<int> vec);
 	WINDOW* getWindow();
 	
 
