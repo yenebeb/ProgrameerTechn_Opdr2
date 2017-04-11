@@ -11,35 +11,22 @@ int main()
 
     static const int lines(24);
     static const int cols(160);
+    cout << "TEST " ;
 
     SheetView s(lines, cols);
     s.tekenheaders();
     WINDOW *win = s.getWindow();
-     attr_t old_attr; /* Huidige settings onthouden */
+    attr_t old_attr; /* Huidige settings onthouden */
     short old_pair;
     wattr_get(win, &old_attr, &old_pair, NULL);
 
-    /* Maak een venster, grootte lines x cols */
-    
-    /* Verplaats cursor rij 10, kolom 20 */
-   
-    /* Nogmaals, maar nu op een achtergrond */
- 
-   // wattr_get(win, &old_attr, &old_pair, NULL);
-
-    wattron(win, A_STANDOUT);
     wmove(win, 0, 0);
     //waddstr(win, "HELLO WORLD!!!");
     wattr_set(win, old_attr, old_pair, NULL); /* Oude settings terugzetten */
     Sheet sheet(5, 5);
 
     Range a("A2:B5", &sheet);
-    /* 
-    ostringstream os;
-    os << "begin= "  << a.getBegin().getKolomnummer() << a.getBegin().getRijnummer();
-    string begin = os.str();
-    const char *c = begin.c_str();
-    waddstr(win, c); */
+ 
     
     /* Wacht tot er op enter wordt gedrukt */
     int ch;
