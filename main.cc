@@ -9,35 +9,80 @@ int main()
 {
 
     static const int lines(24);
-    static const int cols(80);
+    static const int cols(160);
 
     initscr();
     raw();
     noecho();
 
     /* Maak een venster, grootte lines x cols */
-    WINDOW *win = newwin(lines, cols, 0, 0);
+    WINDOW *win = newwin(lines, cols, 10, 10);
     keypad(win, TRUE); /* Enable keypad input */
-    printw("Type any character to see it in bold\n");
 
+    int q = 1;
+    for(int i = 0; i <= 24; i++){
+        for(int j = 0; j <= 80; j++){
+            wmove(win, i, j);
+
+            if(i ==0){
+                if(j%10 == 0){
+                    waddstr(win,"a");
+                }
+                else{
+                    waddstr(win, " ");
+                }
+                refresh();
+
+            }
+            else if(j == 0){
+
+                string s = to_string(q);
+                printw("test"); // << test printw
+                const char* x = s.c_str();
+                waddstr(win, x);
+                q++;
+                refresh();
+            }
+            else if(i==5 && j == 30) {
+                ostringstream os;
+                os << "test";
+                string begin = os.str();
+                const char *c = begin.c_str();
+                waddstr(win, c);
+
+                refresh();            
+
+            }
+
+        }
+        printw("\n");
+    }
     /* Verplaats cursor rij 10, kolom 20 */
-    wmove(win, 10, 20);
-    /* Plaats een string */
-    waddstr(win, "HELLO WORLD!!");
+   
     /* Nogmaals, maar nu op een achtergrond */
     attr_t old_attr; /* Huidige settings onthouden */
     short old_pair;
     wattr_get(win, &old_attr, &old_pair, NULL);
 
     wattron(win, A_STANDOUT);
-    wmove(win, 12, 20);
+    wmove(win, 0, 0);
     waddstr(win, "HELLO WORLD!!!");
     wattr_set(win, old_attr, old_pair, NULL); /* Oude settings terugzetten */
+    Sheet sheet(5, 5);
 
+    Range a("A2:B5", &sheet);
+    /* 
+    ostringstream os;
+    os << "begin= "  << a.getBegin().getKolomnummer() << a.getBegin().getRijnummer();
+    string begin = os.str();
+    const char *c = begin.c_str();
+    waddstr(win, c); */
+    
     /* Wacht tot er op enter wordt gedrukt */
     int ch;
-    while ((ch = wgetch(win)) != '\n')
-	;
+    while ((ch = wgetch(win)) != '\n'){
+        //mousemask();
+    }
 
     refresh();
     echo();
@@ -46,10 +91,8 @@ int main()
     cout << endl
 	 << endl
 	 << endl;
-    Sheet sheet(5, 5);
-    Range a("A2:B5", &sheet);
 
-    cout << "begin=" << a.getBegin().getKolomnummer() << a.getBegin().getRijnummer() << endl;
+
     cout << "end=" << a.getEnd().getKolomnummer() << a.getEnd().getRijnummer() << endl;
 
     int k = 0;
