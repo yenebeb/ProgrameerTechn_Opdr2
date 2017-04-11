@@ -65,7 +65,7 @@ int main()
         switch(key)
         {
             case KEY_UP:
-
+            
             break;
             case KEY_DOWN:
 
