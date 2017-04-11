@@ -4,6 +4,8 @@
 #include "Range.h"
 #include "CellAdress.h"
 #include "SheetView.h"
+#include "Sheet.h"
+
 #include <curses.h>
 
 int main()
@@ -24,6 +26,7 @@ int main()
             sheet.getCell(i, j)->setpointer(x);
         }
     }
+
     
    // Cell *c = sheet.getCell(2,2);
    // cout << c->getString();
@@ -38,6 +41,7 @@ int main()
 
     SheetView s(lines, cols);
     s.tekenheaders();
+    s.tekeninh(sheet);
     WINDOW *win = s.getWindow();
     attr_t old_attr; /* Huidige settings onthouden */
 

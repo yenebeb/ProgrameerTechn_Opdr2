@@ -1,6 +1,7 @@
 #include <curses.h>
 #include <string>
 #include "SheetView.h"
+#include "Sheet.h"
 #include <iostream>
 #include <sstream>
 
@@ -36,36 +37,32 @@ void SheetView::tekenheaders(){
 
             }
             else if(j == 0){
-           //     wattr_set(win, old_attr, old_pair, NULL); /* Oude settings terugzetten */
                 string s = "   ";
                 s += to_string(q);
                 for(int k = s.size(); k < 8; k++){
                     s += " ";
                 }
-                //printw("test"); // << test printw
                 const char* x = s.c_str();
                 waddstr(win, x);
                 q++;
                 refresh();
             }
-            else if((j-2) % 8 == 0 && j > 7){
-                    string test  = "test";
-                    const char *c = test.c_str();
-                    waddstr(win,c);
-                    refresh;
-            }
-            else if(i==5 && j == 30) {
-                ostringstream os;
-                os << "test";
-                string begin = os.str();
-                const char *c = begin.c_str();
-                waddstr(win, c);
+        }
+    }
+}
 
-                refresh();            
+void SheetView::tekeninh(Sheet sheet){
+    for(int i = 0; i < 24; i++){
+        for(int j = 0; j <= 80; j++){
+            wmove(win, i, j);
+            if(i != 0 && (j-2) % 8 == 0 && j > 7){
+                Cell *c = sheet.getCell(2,2);
+                string begin = c->getString();
             }
         }
     }
 }
+
 WINDOW* SheetView::getWindow(){
 	return win;
 
