@@ -97,6 +97,14 @@ void SheetView::setCursor(std::vector<int> cur)
     refresh();
 }
 
+char SheetView::getchar(){
+    int ch;
+    keypad(win, TRUE);
+    refresh();
+    ch = wgetch(win);
+    return ch;
+}
+
 WINDOW *SheetView::getWindow()
 {
     return win;

@@ -11,8 +11,11 @@ public:
 	void tekenheaders();
 	void tekeninh(Sheet* sheet);
 	void tekencurs();
-	std::vector<int> getCursor();
-	void setCursor(std::vector<int> vec);
+
+	std::vector<int> getcursor();
+	char getchar();
+	void setcursor(std::vector<int> vec);
+	
 	WINDOW* getWindow();
 	
 
