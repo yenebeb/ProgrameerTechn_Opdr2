@@ -6,6 +6,7 @@
 #include "SheetView.h"
 #include "Sheet.h"
 #include "SheetController.h"
+#include <string>
 
 #include <curses.h>
 
@@ -23,7 +24,6 @@ int main()
     sc.run(s, sheet);    
 
     WINDOW *win = s.getWindow();
-
     endwin();
     return 0;
     
