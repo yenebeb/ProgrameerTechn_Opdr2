@@ -28,7 +28,7 @@ Range.o: Range.cc Range.h Sheet.h Sheet.cc CellAdress.h CellAdress.cc
 SheetView.o: SheetView.cc SheetView.h
 	$(CC) $(CompileParms) SheetView.cc -lncurses
 
-SheetController.o: SheetController.cc SheetController.h SheetView.cc SheetView.h
+SheetController.o: SheetController.cc SheetController.h SheetView.cc SheetView.h Range.cc Range.h
 	$(CC) $(CompileParms) SheetController.cc -lncurses
 
 main.o: main.cc Sheet.cc Sheet.h Range.cc Range.h CellAdress.cc CellAdress.h SheetController.cc SheetController.h
