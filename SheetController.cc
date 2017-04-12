@@ -70,29 +70,30 @@ void SheetController::moveCursor(int x, SheetView& s){
 }
 
 void SheetController::somberekenen(Sheet& sheet, SheetView& s){
+
     Range range(CellAdress('B', 1), CellAdress('D', 3), &sheet);
     RangeIterator rir = range.begin();
- 
+    RangeIterator rirEnd = range.end();
     string inh = "";
     int value = 0;
     try
     {
-        for (int i = 0; i < 4; i++)
+        while(rir != rirEnd)
         {
             Cell *z = &*rir;
             inh = z->getString();
-            if(inh != ""){
+            if(inh != "")
                 value += stoi(inh.c_str());
                 ++rir;
             }
             sheet.getCell(5, 5)->setpointer(to_string(value));
         }
-    }
     catch (exception &e)
     {
         sheet.getCell(5, 5)->setpointer("NAN");
-    }         
+    }
     refresh();
+
 }
 
 void SheetController::celbewerking(Sheet& sheet, SheetView& s){

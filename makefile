@@ -7,7 +7,7 @@ OBJS = Cell.o CellAdress.o CellValueBase.o Column.o Sheet.o Range.o SheetView.o 
 opdr: $(OBJS)
 	$(CC) -Wall $(OBJS) -o Spread -lncurses 
 
-Cell.o: Cell.cc Cell.h
+Cell.o: Cell.cc Cell.h SheetObserver.h
 	$(CC) $(CompileParms) Cell.cc
 
 CellAdress.o: CellAdress.cc CellAdress.h

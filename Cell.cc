@@ -1,4 +1,5 @@
 #include "Cell.h"
+#include "SheetObserver.h"
 #include <memory>
 #include <iostream>
 
@@ -31,9 +32,12 @@ string Cell::getString()
 
 void Cell::setpointer(string s)
 {
-    CellValueBase *y = new CellValue<string>(s);
+    CellValueBase *y = new CellFormula<string>(s);
     unique_ptr<CellValueBase> x(y);
     value = move(x);
+    //Sheet seintje
+    //Sheet.cellverandert(this*)
+
 }
 
 void Cell::clearpointer()
