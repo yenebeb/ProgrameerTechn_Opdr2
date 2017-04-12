@@ -18,8 +18,10 @@ public :
     Cell();
     Cell(const Cell &c);
     std::unique_ptr<CellValueBase> readpointer();
-    void setpointer(std::string s);
+    void setpointer(CellValueBase *y);
     void clearpointer();
+    std::string getCalcString();
+
     std::string getString();
 };
 
@@ -34,6 +36,7 @@ public:
     virtual std::string StringStreamValue(){};
     virtual std::string stringValue(){};
     virtual float floatValue(){};
+    virtual std::string stringCalcValue(){};
 };
 
 
@@ -60,6 +63,9 @@ std::string stringValue(){
     return s;
 }
 
+std::string stringCalcValue()
+    {};
+
 float floatValue(){
     //float x = float(value);
     return 5.3;
@@ -75,10 +81,15 @@ private:
     T value;
     T calcvalue;
 public:
-    CellFormula(T initial_value)
-        : CellValueBase(), value(initial_value)
+    CellFormula(T initial_value, T calc_value)
+        : CellValueBase(), value(initial_value), calcvalue(calc_value)
         { };
-    void setcalcValue();
+    std::string stringCalcValue(){
+        std::stringstream ss;
+        ss << calcvalue;
+        std::string s(ss.str());
+        return s;
+    };
 
 std::string StringStreamValue(){
 
@@ -92,12 +103,7 @@ std::string stringValue(){
     return s;
 };
 
-std::string stringCalcValue(){
-    std::stringstream ss;
-    ss << calcvalue;
-    std::string s(ss.str());
-    return s;
-};
+
 
 float floatValue(){
     //float x = float(value);

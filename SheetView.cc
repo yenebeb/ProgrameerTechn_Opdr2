@@ -77,7 +77,9 @@ void SheetView::tekeninh(Sheet *sheet)
                 }
                 Cell *d = sheet->getCell(i - 1, (j - 8) / 8);
                 string inhoud = d->getString().substr(0,8); //ophalen en afkappen na 8 tekens
-                
+                if(inhoud != "" && inhoud.at(0) == '='){
+                    inhoud = d->getCalcString().substr(0,8);
+                }
                 for(int k = inhoud.size(); k < 6; k++){ // vult de string met spaties aan de voorkant als die minder dan 6 characters lang is
                     inhoud = " "+ inhoud;
                 }

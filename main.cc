@@ -1,7 +1,6 @@
 #include "Sheet.h"
 #include <iostream>
 #include <sstream>
-#include "Range.h"
 #include "CellAdress.h"
 #include "SheetView.h"
 #include "Sheet.h"

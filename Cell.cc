@@ -30,15 +30,34 @@ string Cell::getString()
     return y->stringValue();
 }
 
-void Cell::setpointer(string s)
+string Cell::getCalcString()
 {
-    CellValueBase *y = new CellFormula<string>(s);
+    CellValueBase *y;
+    y = value.get();
+    if(y == nullptr){
+        return "";
+    }
+    return y->stringCalcValue();
+}
+
+void Cell::setpointer(CellValueBase *y)
+{
     unique_ptr<CellValueBase> x(y);
     value = move(x);
     //Sheet seintje
     //Sheet.cellverandert(this*)
 
 }
+/*
+void Cell::setpointer(string s)
+{
+    CellValueBase *y = new CellValue<string>(s);
+    unique_ptr<CellValueBase> x(y);
+    value = move(x);
+    //Sheet seintje
+    //Sheet.cellverandert(this*)
+
+}*/
 
 void Cell::clearpointer()
 {
