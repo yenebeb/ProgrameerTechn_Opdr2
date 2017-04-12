@@ -72,7 +72,7 @@ void SheetController::celbewerking(int x, SheetView& s){
     //methode nieuwe window
     //int x = getchar 
 
-    while(x != '\n'){
+    //while(x != '\n'){
 
-        switch(x)
+        //switch(x)
 }
