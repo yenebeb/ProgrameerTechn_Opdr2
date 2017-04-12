@@ -82,6 +82,7 @@ void SheetController::somberekenen(Sheet& sheet, SheetView& s){
                  {
                      Cell *z = &*rir;
                      inh = z->getString();
+                     if(inh != "")
                      value += stoi(inh.c_str());
                      ++rir;
                  }
