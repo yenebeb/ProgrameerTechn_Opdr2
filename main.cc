@@ -5,6 +5,7 @@
 #include "CellAdress.h"
 #include "SheetView.h"
 #include "Sheet.h"
+#include <string>
 
 #include <curses.h>
 
@@ -91,6 +92,32 @@ int main()
                 vec.at(1)--;
             s.setCursor(vec);
             break;
+        case 'n':
+        {
+            Range range(CellAdress('B', 1), CellAdress('D', 3), &sheet);
+            RangeIterator rir = range.begin();
+
+            string inh = "";
+            int value = 0;
+            try
+            {
+                for (int i = 0; i < 4; i++)
+                {
+                    Cell *z = &*rir;
+                    inh = z->getString();
+                    value += stoi(inh.c_str());
+                    ++rir;
+                }
+                sheet.getCell(5, 5)->setpointer(to_string(value));
+            }
+                catch (exception &e)
+                {
+                    sheet.getCell(5, 5)->setpointer("NAN");
+                }
+            
+            refresh();
+            break;
+        }
         case '\n':
             vec = s.getCursor();
             WINDOW *popup = newwin(3, 19, 1, 1);
@@ -110,14 +137,14 @@ int main()
             while ((key = wgetch(win)) != '\n')
             {
                 wmove(popup, 1, 1);
-                c ="                 ";
+                c = "                 ";
                 waddstr(popup, c);
                 if (key == KEY_BACKSPACE)
                 {
-                    if(inhoud.size())
-                    inhoud.pop_back();
+                    if (inhoud.size())
+                        inhoud.pop_back();
                 }
-                else if(inhoud.size()< 17)
+                else if (inhoud.size() < 17)
                 {
                     inhoud += key;
                 }
@@ -130,15 +157,15 @@ int main()
             s.tekenheaders();
             break;
         }
-        s.tekeninh(&sheet);
-        //mousemask();
-    }
+            s.tekeninh(&sheet);
+            //mousemask();
+        }
 
-    refresh();
-    echo();
-    endwin();
-    return 0;
-    /*
+        refresh();
+        echo();
+        endwin();
+        return 0;
+        /*
     cout << endl
          << endl
          << endl;
@@ -195,4 +222,4 @@ int main()
         cout << "value=" << test->stringValue() << " <<<< ";
     }
     */
-}
+    }
