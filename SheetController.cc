@@ -51,7 +51,6 @@ int SheetController::run(SheetView &s, Sheet &sheet)
         x = s.getchar();
     }
 }
-
 void SheetController::moveCursor(int x, SheetView &s)
 {
     std::vector<int> vec;
@@ -151,7 +150,7 @@ string SheetController::berekenAvg(Sheet &sheet, Range range)
     RangeIterator rir = range.begin();
     RangeIterator rirEnd = range.end();
     string inh = "";
-    int value = 0;
+    double value = 0;
     int count = 0;
     try
     {
@@ -162,13 +161,13 @@ string SheetController::berekenAvg(Sheet &sheet, Range range)
             if (inh != "")
             {
                 if (inh.at(0) == '=')
-                    value += stoi(formule(sheet, inh));
+                    value += stod(formule(sheet, inh));
                 else
-                    value += stoi(inh.c_str());
+                    value += stod(inh.c_str());
                 bool digit = true;
                 for (int i = 0; i < inh.size(); i++)
                 {
-                    if (!std::isdigit(inh.at(i)))
+                    if (!(std::isdigit(inh.at(i)) || inh.at(i)==',' || inh.at(i)=='.'))
                         digit = false;
                 }
                 if (digit)
@@ -206,7 +205,7 @@ string SheetController::berekenCount(Sheet &sheet, Range range)
                 bool digit = true;
                 for (int i = 0; i < inh.size(); i++)
                 {
-                    if (!std::isdigit(inh.at(i)))
+                    if (!(std::isdigit(inh.at(i)) || inh.at(i)==',' || inh.at(i)=='.'))
                         digit = false;
                 }
                 if (digit)
