@@ -233,7 +233,7 @@ void SheetController::celbewerking(Sheet &sheet, SheetView &s)
     WINDOW *popup = newwin(3, 19, 1, 1);
     mvwin(popup, vec.at(0), vec.at(1) * 8 + 3);
     wmove(popup, 1, 1);
-    wborder(popup, '|', '|', '-', '-', '+setpointer', '+', '+', '+');
+    wborder(popup, '|', '|', '-', '-', '+', '+', '+', '+');
     wrefresh(popup);
 
     // input van user naar cell en display ook pak oude en plaats
@@ -267,7 +267,7 @@ void SheetController::celbewerking(Sheet &sheet, SheetView &s)
         wrefresh(popup);
     }
     CellValueBase *y;
-    if(inhoud.at(0) == '='){
+    if(inhoud != "" && inhoud.at(0) == '='){
          y = new CellFormula<string>(inhoud, formule(sheet, inhoud));
     }
     else{
