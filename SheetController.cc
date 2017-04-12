@@ -2,6 +2,7 @@
 #include "SheetController.h"
 #include "Sheet.h"
 #include "SheetView.h"
+#include "Range.h"
 #include <curses.h>
 SheetController::SheetController(){
 
@@ -19,7 +20,8 @@ int SheetController::run(SheetView& s, Sheet& sheet){
 
 		switch(x)
 		{
-            case 'c':
+            case 'n':
+                somberekenen(sheet, s);
             break;
             case '\n':
                 celbewerking(sheet, s);
@@ -64,6 +66,33 @@ void SheetController::moveCursor(int x, SheetView& s){
         	break;
     }
     return;
+
+}
+
+void SheetController::somberekenen(Sheet& sheet, SheetView& s){
+    
+            Range range(CellAdress('B', 1), CellAdress('D', 3), &sheet);
+            RangeIterator rir = range.begin();
+ 
+             string inh = "";
+             int value = 0;
+             try
+             {
+                 for (int i = 0; i < 4; i++)
+                 {
+                     Cell *z = &*rir;
+                     inh = z->getString();
+                     value += stoi(inh.c_str());
+                     ++rir;
+                 }
+                 sheet.getCell(5, 5)->setpointer(to_string(value));
+             }
+                 catch (exception &e)
+                 {
+                     sheet.getCell(5, 5)->setpointer("NAN");
+                 }
+             
+             refresh();
 
 }
 
