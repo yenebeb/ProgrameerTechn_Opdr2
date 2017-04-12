@@ -70,31 +70,29 @@ void SheetController::moveCursor(int x, SheetView& s){
 }
 
 void SheetController::somberekenen(Sheet& sheet, SheetView& s){
-    
-            Range range(CellAdress('B', 1), CellAdress('D', 3), &sheet);
-            RangeIterator rir = range.begin();
+    Range range(CellAdress('B', 1), CellAdress('D', 3), &sheet);
+    RangeIterator rir = range.begin();
  
-             string inh = "";
-             int value = 0;
-             try
-             {
-                 for (int i = 0; i < 4; i++)
-                 {
-                     Cell *z = &*rir;
-                     inh = z->getString();
-                     if(inh != "")
-                     value += stoi(inh.c_str());
-                     ++rir;
-                 }
-                 sheet.getCell(5, 5)->setpointer(to_string(value));
-             }
-                 catch (exception &e)
-                 {
-                     sheet.getCell(5, 5)->setpointer("NAN");
-                 }
-             
-             refresh();
-
+    string inh = "";
+    int value = 0;
+    try
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            Cell *z = &*rir;
+            inh = z->getString();
+            if(inh != ""){
+                value += stoi(inh.c_str());
+                ++rir;
+            }
+            sheet.getCell(5, 5)->setpointer(to_string(value));
+        }
+    }
+    catch (exception &e)
+    {
+        sheet.getCell(5, 5)->setpointer("NAN");
+    }         
+    refresh();
 }
 
 void SheetController::celbewerking(Sheet& sheet, SheetView& s){
@@ -108,6 +106,7 @@ void SheetController::celbewerking(Sheet& sheet, SheetView& s){
     wmove(popup, 1, 1);
     wborder(popup, '|', '|', '-', '-', '+', '+', '+', '+');
     wrefresh(popup);
+
     // input van user naar cell en display ook pak oude en plaats
     string input = "";
     Cell *d = sheet.getCell(vec.at(0), vec.at(1));
@@ -128,14 +127,14 @@ void SheetController::celbewerking(Sheet& sheet, SheetView& s){
                 inhoud.pop_back();
             }
         }
-            else if(inhoud.size()< 17)
-            {
-                inhoud += key;
-            }
-            c = inhoud.c_str();
-            wmove(popup, 1, 1);
-            waddstr(popup, c);
-            wrefresh(popup);
+        else if(inhoud.size()< 17)
+        {
+            inhoud += key;
+        }
+        c = inhoud.c_str();
+        wmove(popup, 1, 1);
+        waddstr(popup, c);
+        wrefresh(popup);
     }
     sheet.getCell(vec.at(0), vec.at(1))->setpointer(inhoud);
     s.tekenheaders();
