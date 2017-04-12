@@ -105,7 +105,11 @@ string SheetController::formule(Sheet &sheet, string cellValue)
         Range range(reference, &sheet);
         return berekenAvg(sheet, range);
     }
-    if (soort == "=COUNT")
+    if (soort == "=COUNT"){
+        std::getline(ss, reference, ')');
+        Range range(reference, &sheet);
+        return berekenCount(sheet, range);
+    }
         return nullptr;
 }
 // berekent de som van alle cellen in een Range
