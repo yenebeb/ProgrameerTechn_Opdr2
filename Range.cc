@@ -40,3 +40,12 @@ RangeIterator Range::begin(void)
 {
     return RangeIterator(*this, 0);
 }
+
+RangeIterator Range::end(void)
+{
+    CellAdress a = getBegin();
+    CellAdress b = getEnd();
+    int breedte = 1 + b.getKolomnummer() - a.getKolomnummer();
+    int hoogte = 1 + b.getRijnummer() - a.getRijnummer();
+    return RangeIterator(*this, breedte*hoogte);
+}

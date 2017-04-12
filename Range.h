@@ -37,10 +37,12 @@ class RangeIterator : public std::iterator<std::input_iterator_tag, int>
   public:
     RangeIterator(Range &range, size_t offset)
         : range(range), offset(offset)
-    {
-    }
-
+    {}
     bool operator==(const RangeIterator &Riter) const
+    {
+        return &Riter.range == &range && Riter.offset == offset;
+    }
+    bool operator!=(const RangeIterator &Riter) const
     {
         return !operator==(Riter);
     }
