@@ -23,7 +23,7 @@ int main()
     sc.run(s, sheet);    
 
     WINDOW *win = s.getWindow();
-    
+
     endwin();
     return 0;
     

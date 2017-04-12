@@ -22,8 +22,7 @@ int SheetController::run(SheetView& s, Sheet& sheet){
             case 'c':
             break;
             case '\n':
-                
-                //celbewerking
+                celbewerking(sheet, s);
             break;
 			case KEY_UP:
             case KEY_DOWN:
@@ -68,11 +67,47 @@ void SheetController::moveCursor(int x, SheetView& s){
 
 }
 
-void SheetController::celbewerking(int x, SheetView& s){
+void SheetController::celbewerking(Sheet& sheet, SheetView& s){
     //methode nieuwe window
     //int x = getchar 
+    std::vector<int> vec;
+    WINDOW* win = s.getWindow();
+    vec = s.getCursor();
+    WINDOW *popup = newwin(3, 19, 1, 1);
+    mvwin(popup, vec.at(0), vec.at(1) * 8 + 3);
+    wmove(popup, 1, 1);
+    wborder(popup, '|', '|', '-', '-', '+', '+', '+', '+');
+    wrefresh(popup);
+    // input van user naar cell en display ook pak oude en plaats
+    string input = "";
+    Cell *d = sheet.getCell(vec.at(0), vec.at(1));
+    string inhoud = d->getString();
+    wmove(popup, 1, 1);
+    const char *c = inhoud.c_str();
+    waddstr(popup, c);
+    wrefresh(popup);
+    int key;
+    while ((key = wgetch(win)) != '\n')
+    {
+        wmove(popup, 1, 1);
+        c ="                 ";
+        waddstr(popup, c);
+        if (key == KEY_BACKSPACE)
+        {
+            if(inhoud.size()){
+                inhoud.pop_back();
+            }
+        }
+            else if(inhoud.size()< 17)
+            {
+                inhoud += key;
+            }
+            c = inhoud.c_str();
+            wmove(popup, 1, 1);
+            waddstr(popup, c);
+            wrefresh(popup);
+    }
+    sheet.getCell(vec.at(0), vec.at(1))->setpointer(inhoud);
+    s.tekenheaders();
 
-    //while(x != '\n'){
-
-        //switch(x)
 }

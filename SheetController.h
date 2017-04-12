@@ -9,7 +9,7 @@ public:
 	SheetController();
 	int run(SheetView& s, Sheet& sheet);
 	void moveCursor(int x, SheetView& s); 
-	void celbewerking(int x, SheetView& s);
+	void celbewerking(Sheet& sheet, SheetView& s);
 private:
 	
 	
