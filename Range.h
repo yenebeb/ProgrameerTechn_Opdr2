@@ -71,6 +71,16 @@ class RangeIterator : public std::iterator<std::input_iterator_tag, int>
 
         return *range.getSheet()->getCell((int)(i + m), k + l);
     }
+    CellAdress getCellAdress(){
+        int k = range.getBegin().getKolomnummer();
+        int k1 = range.getEnd().getKolomnummer();
+
+        int i = range.getBegin().getRijnummer();
+        int i1 = range.getEnd().getRijnummer();
+        char m = offset / (k1 - k + 1);
+        int l = offset % (k1 - k + 1);
+        return CellAdress('A'+k+l, i+m+1);
+    }
     RangeIterator &operator++()
     {
         ++offset;

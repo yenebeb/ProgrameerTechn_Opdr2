@@ -29,8 +29,8 @@ int SheetController::run(SheetView &s, Sheet &sheet)
                     string cellValue = sheet.getCell(i, j)->getString();
                     if (cellValue != "" && cellValue.at(0) == '=')
                     {
-                        CellValueBase *y = new CellFormula<string>(cellValue, formule(sheet, cellValue));
-                        sheet.getCell(i, j)->setpointer(y);
+                        //  CellValueBase *y = new CellFormula<string>(cellValue, formule(sheet, cellValue));
+                        // sheet.getCell(i, j)->setpointer(y);
                     }
                 }
             }
@@ -87,7 +87,7 @@ void SheetController::moveCursor(int x, SheetView &s)
 
 // pakt als invoer een formule string
 // bijv. "=SUM(A1:B5)"
-string SheetController::formule(Sheet &sheet, string cellValue)
+string SheetController::formule(Sheet &sheet, string cellValue, vector<CellAdress> vecCa)
 {
     std::stringstream ss;
     ss.str(cellValue);
@@ -98,29 +98,39 @@ string SheetController::formule(Sheet &sheet, string cellValue)
     {
         std::getline(ss, reference, ')');
         Range range(reference, &sheet);
-        return berekenSom(sheet, range);
+        vecCa.push_back(range.getBegin());
+        return berekenSom(sheet, range, vecCa);
     }
     if (soort == "=AVG")
     {
         std::getline(ss, reference, ')');
         Range range(reference, &sheet);
-        return berekenAvg(sheet, range);
+        return berekenAvg(sheet, range, vecCa);
     }
-    if (soort == "=COUNT"){
+    if (soort == "=COUNT")
+    {
         std::getline(ss, reference, ')');
         Range range(reference, &sheet);
-        return berekenCount(sheet, range);
+        return berekenCount(sheet, range, vecCa);
     }
-        return nullptr;
+    return nullptr;
 }
 // berekent de som van alle cellen in een Range
 // als daarin formules zitten worden die eerst opnieuw berekent
-string SheetController::berekenSom(Sheet &sheet, Range range)
+string SheetController::berekenSom(Sheet &sheet, Range range, vector<CellAdress> vecCa)
 {
     RangeIterator rir = range.begin();
     RangeIterator rirEnd = range.end();
     string inh = "";
     int value = 0;
+    // int test = rir.getCellAdress().getKolomnummer();
+    // int test1 = rir.getCellAdress().getRijnummer();
+    int test = vecCa.at(0).getKolomnummer();
+    int test1 = vecCa.at(0).getRijnummer();
+    CellValueBase *y = new CellValue<string>(std::to_string(test));
+    CellValueBase *z = new CellValue<string>(std::to_string(test1));
+    sheet.getCell(5, 4)->setpointer(y);
+    sheet.getCell(5, 5)->setpointer(z);
     try
     {
         while (rir != rirEnd)
@@ -130,9 +140,22 @@ string SheetController::berekenSom(Sheet &sheet, Range range)
             if (inh != "")
             {
                 if (inh.at(0) == '=')
-                    value += stoi(formule(sheet, inh));
+                {
+                    for (CellAdress res : vecCa)
+                    {
+                        if (rir.getCellAdress().getKolomnummer() == res.getKolomnummer() && rir.getCellAdress().getRijnummer() == res.getRijnummer())
+                        {
+                            return "ERR";
+                        }
+                    }
+                    //TODO: hier nog vecCa aanpassen
+                    vecCa.push_back(rir.getCellAdress());
+                    value += stoi(formule(sheet, inh, vecCa));
+                }
                 else
+                {
                     value += stoi(inh.c_str());
+                }
             }
             ++rir;
         }
@@ -145,7 +168,7 @@ string SheetController::berekenSom(Sheet &sheet, Range range)
 }
 // berekent het gemiddelde van alle cellen in een Range
 // als daarin formules zitten worden die eerst opnieuw berekent
-string SheetController::berekenAvg(Sheet &sheet, Range range)
+string SheetController::berekenAvg(Sheet &sheet, Range range, vector<CellAdress> vecCa)
 {
     RangeIterator rir = range.begin();
     RangeIterator rirEnd = range.end();
@@ -161,13 +184,13 @@ string SheetController::berekenAvg(Sheet &sheet, Range range)
             if (inh != "")
             {
                 if (inh.at(0) == '=')
-                    value += stod(formule(sheet, inh));
+                    value += stod(formule(sheet, inh, vecCa));
                 else
                     value += stod(inh.c_str());
                 bool digit = true;
                 for (int i = 0; i < inh.size(); i++)
                 {
-                    if (!(std::isdigit(inh.at(i)) || inh.at(i)==',' || inh.at(i)=='.'))
+                    if (!(std::isdigit(inh.at(i)) || inh.at(i) == ',' || inh.at(i) == '.'))
                         digit = false;
                 }
                 if (digit)
@@ -186,7 +209,7 @@ string SheetController::berekenAvg(Sheet &sheet, Range range)
 }
 // telt hoeveel cellen exclusief nummers bevatten in een
 // range
-string SheetController::berekenCount(Sheet &sheet, Range range)
+string SheetController::berekenCount(Sheet &sheet, Range range, vector<CellAdress> vecCa)
 {
     RangeIterator rir = range.begin();
     RangeIterator rirEnd = range.end();
@@ -201,11 +224,11 @@ string SheetController::berekenCount(Sheet &sheet, Range range)
             if (inh != "")
             {
                 if (inh.at(0) == '=')
-                    inh = formule(sheet, inh);
+                    inh = formule(sheet, inh, vecCa);
                 bool digit = true;
                 for (int i = 0; i < inh.size(); i++)
                 {
-                    if (!(std::isdigit(inh.at(i)) || inh.at(i)==',' || inh.at(i)=='.'))
+                    if (!(std::isdigit(inh.at(i)) || inh.at(i) == ',' || inh.at(i) == '.'))
                         digit = false;
                 }
                 if (digit)
@@ -267,10 +290,14 @@ void SheetController::celbewerking(Sheet &sheet, SheetView &s)
         wrefresh(popup);
     }
     CellValueBase *y;
-    if(inhoud != "" && inhoud.at(0) == '='){
-         y = new CellFormula<string>(inhoud, formule(sheet, inhoud));
+    if (inhoud != "" && inhoud.at(0) == '=')
+    {
+        vector<CellAdress> vecCa;
+        vecCa.push_back(CellAdress(vec.at(0) + 'A', vec.at(1) + 1));
+        y = new CellFormula<string>(inhoud, formule(sheet, inhoud, vecCa));
     }
-    else{
+    else
+    {
         y = new CellValue<string>(inhoud);
     }
     sheet.getCell(vec.at(0), vec.at(1))->setpointer(y);

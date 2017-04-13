@@ -13,10 +13,10 @@ public:
 	void moveCursor(int x, SheetView& s); 
 	void celbewerking(Sheet& sheet, SheetView& s);
 	//string somberekenen(Sheet& sheet, int y, int x);
-	std::string formule(Sheet &sheet, string value);
-	std::string berekenSom(Sheet &sheet, Range range);
-	std::string berekenAvg(Sheet &sheet, Range range);
-	std::string berekenCount(Sheet &sheet, Range range);
+	std::string formule(Sheet &sheet, string value, vector<CellAdress> vecCa);
+	std::string berekenSom(Sheet &sheet, Range range,vector<CellAdress> vecCa);
+	std::string berekenAvg(Sheet &sheet, Range range, vector<CellAdress> vecCa);
+	std::string berekenCount(Sheet &sheet, Range range, vector<CellAdress> vecCa);
 private:
 	
 	
