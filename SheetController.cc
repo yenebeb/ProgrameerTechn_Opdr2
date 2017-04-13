@@ -144,18 +144,13 @@ string SheetController::berekenSom(Sheet &sheet, Range range, vector<CellAdress>
                     for (CellAdress res : vecCa)
                     {
                         if (rir.getCellAdress().getKolomnummer() == res.getKolomnummer() && rir.getCellAdress().getRijnummer() == res.getRijnummer())
-                        {
                             return "ERR";
-                        }
                     }
-                    //TODO: hier nog vecCa aanpassen
                     vecCa.push_back(rir.getCellAdress());
                     value += stoi(formule(sheet, inh, vecCa));
                 }
                 else
-                {
                     value += stoi(inh.c_str());
-                }
             }
             ++rir;
         }
@@ -184,9 +179,25 @@ string SheetController::berekenAvg(Sheet &sheet, Range range, vector<CellAdress>
             if (inh != "")
             {
                 if (inh.at(0) == '=')
-                    value += stod(formule(sheet, inh, vecCa));
+                {
+                    for (CellAdress res : vecCa)
+                    {
+                        if (rir.getCellAdress().getKolomnummer() == res.getKolomnummer() && rir.getCellAdress().getRijnummer() == res.getRijnummer())
+                            return "ERR";
+                    }
+                    vecCa.push_back(rir.getCellAdress());
+                    string form = formule(sheet, inh, vecCa);
+                    if (form == "ERR")
+                        return "ERR";
+                    value += stod(form.c_str());
+                    inh = form;
+                    //    CellValueBase *z = new CellValue<string>(inh);
+                    //   sheet.getCell(7, 7)->setpointer(z);
+                }
                 else
+                {
                     value += stod(inh.c_str());
+                }
                 bool digit = true;
                 for (int i = 0; i < inh.size(); i++)
                 {
@@ -224,7 +235,15 @@ string SheetController::berekenCount(Sheet &sheet, Range range, vector<CellAdres
             if (inh != "")
             {
                 if (inh.at(0) == '=')
+                {
+                    for (CellAdress res : vecCa)
+                    {
+                        if (rir.getCellAdress().getKolomnummer() == res.getKolomnummer() && rir.getCellAdress().getRijnummer() == res.getRijnummer())
+                            return "ERR";
+                    }
+                    vecCa.push_back(rir.getCellAdress());
                     inh = formule(sheet, inh, vecCa);
+                }
                 bool digit = true;
                 for (int i = 0; i < inh.size(); i++)
                 {
