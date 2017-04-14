@@ -23,14 +23,16 @@ unique_ptr<CellValueBase> Cell::readpointer()
 
 string Cell::getString()
 {
-    CellValueBase *y;
-    y = value.get();
+    CellValueBase *y; // maak nieuwe pointer CellValueBase
+    y = value.get(); // zet gelijk aan value
+    // als value een nullptr is, return lege string
     if(y == nullptr){
         return "";
     }
     return y->stringValue();
 }
 
+// idem getstring, voor calcvalue
 string Cell::getCalcString()
 {
     CellValueBase *y;
@@ -45,28 +47,30 @@ string Cell::getCalcString()
 
 void Cell::setpointer(CellValueBase *y)
 {
-    unique_ptr<CellValueBase> x(y);
-    value = move(x);
+    unique_ptr<CellValueBase> x(y); //maak nieuwe unique pointer, naar y
+    value = move(x); // laat value naar de inhoud van x pointen. Dit vewijdert de x pointer
 }
 
 void Cell::serialize (ostream &output){
     // getstring from cellValueBase
     std::string inhoud = this->getString();
-    inhoud += "|";
-    output << inhoud;
+    inhoud += "|"; // plaats | achter inhoud
+    output << inhoud; //print naar file
 }
 
 
 void Cell::deserialize (std::ifstream &input){
-    char x;
-    CellValueBase *y;
+    char x; // char om in te lezen
+    CellValueBase *y; // de cellValueBase die aangemaakt moet worden
     string inhoud = "";
-    input.get(x);
+    input.get(x); 
+    // lees character en sla het op in sting inhoud
+    // totdat x gelijk is aan | 
     while(x != '|'){
-        inhoud += x;
+        inhoud += x; 
         input.get(x);
     }
-    size_t search = inhoud.find("=");
+    size_t search = inhoud.find("="); // zoekt naar = teken in string inhoud
     
     // if '=' has been found, make CellFormula
     if(search != string::npos){

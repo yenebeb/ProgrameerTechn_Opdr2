@@ -16,8 +16,7 @@ CellAdress::CellAdress()
 // maakt celladress, met input celreferentie
 CellAdress::CellAdress(std::string celreferentie)
 {
-
-    kolomnummer = celreferentie.at(0) - 'A';
+    kolomnummer = celreferentie.at(0) - 'A'; 
     std::string myString = celreferentie.substr(1, 3);
     rijnummer = atoi(myString.c_str()) - 1;
 }
