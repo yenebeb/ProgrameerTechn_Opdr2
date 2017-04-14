@@ -4,16 +4,18 @@
 
 #include <memory>
 #include "SheetObserver.h"
+#include "Serializable.h"
 #include <string>
 #include <sstream>
 #include <iostream>
 
 class CellValueBase;
 class SheetObserver;
+class Serializable;
 
-class Cell{
+class Cell : public Serializable {
 private :
-    std::unique_ptr<CellValueBase> value ;
+    std::unique_ptr<CellValueBase> value;
 public :
     Cell();
     Cell(const Cell &c);
@@ -21,8 +23,10 @@ public :
     void setpointer(CellValueBase *y);
     void clearpointer();
     std::string getCalcString();
-
     std::string getString();
+    void serialize (std:: ostream &output);
+    void deserialize (std::ifstream &output);
+
 };
 
 //
@@ -103,15 +107,10 @@ std::string stringValue(){
     return s;
 };
 
-
-
 float floatValue(){
     //float x = float(value);
     return 5.3;
 };
 
-void cellChanged(const Cell &cell){
-
-};
 };
 #endif // CELL_H

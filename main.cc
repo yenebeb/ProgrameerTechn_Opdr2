@@ -6,11 +6,13 @@
 #include "Sheet.h"
 #include "SheetController.h"
 #include <string>
+#include <fstream>
 
 #include <curses.h>
 
 int main()
 {
+    
     // ui
      // sheet initialization
     Sheet sheet(24, 80);

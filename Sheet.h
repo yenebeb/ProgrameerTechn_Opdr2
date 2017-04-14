@@ -5,7 +5,7 @@
 #include "Cell.h"
 #include "SheetObserver.h"
 
-class Sheet {
+class Sheet : public Serializable {
 private:
     vector<Column*> kolommen;
     vector<SheetObserver*> sheeto;
@@ -17,6 +17,11 @@ public:
     void addObserver(SheetObserver* x);
     std::vector<Column*>::iterator begin();
     std::vector<Column*>::iterator end();
+
+void serialize(std:: ostream &output);
+
+void deserialize(std::ifstream &output);
+
 };
 
 #endif //SHEET_H
