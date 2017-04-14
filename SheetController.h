@@ -31,7 +31,10 @@ public:
 	void prompt(Sheet &sheet, SheetView &s, string & string, bool file);
 	// methode om alle formules te updaten
 	void updateFormules(SheetView &s, Sheet &sheet);
-
+	// checkt of een string een digit is
+	void stringIsDigit(string s, int &count);
+	// checkt of een CellAdress in de vector zit
+	bool containsCellAdress(vector<CellAdress> vecCa, CellAdress ca);
 
 	// Methode die juiste formule bepaalt
 	std::string formule(Sheet &sheet, string value, vector<CellAdress> vecCa);

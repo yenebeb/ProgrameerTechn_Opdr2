@@ -2,6 +2,12 @@
 #define CELLADRESS_H
 
 #include <string>
+
+// object met 2 integers die een adress van een cell
+// aangeven. Deze kan gemaakt worden met de referentie 
+// naar de cel zoals in het programma zoals, "A3"
+// en zal dan leiden tot een object met 
+// kolomnummer = 0 en rijnummer = 2
 class CellAdress
 {
     private:

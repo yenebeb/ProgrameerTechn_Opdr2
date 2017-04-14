@@ -13,17 +13,14 @@ SheetController::SheetController()
 
 int SheetController::run(SheetView &s, Sheet &sheet)
 {
-    s.tekenheaders(); // tekenheaders
-    s.tekeninh(&sheet); // tekentinhoud
+    s.tekenheaders();            // tekenheaders
+    s.tekeninh(&sheet);          // tekentinhoud
     WINDOW *win = s.getWindow(); // get window van sheetview
-    int key;
     keypad(win, TRUE);
     int x = s.getchar();
-
     // de main loop, exit with q
     while (x != 'q')
     {
-
         switch (x)
         {
         case 'r':
@@ -46,22 +43,22 @@ int SheetController::run(SheetView &s, Sheet &sheet)
             break;
         }
         s.tekeninh(&sheet);
-
         x = s.getchar();
     }
 }
 
 // update alle cellFormula
-void SheetController::updateFormules(SheetView &s, Sheet &sheet){
+void SheetController::updateFormules(SheetView &s, Sheet &sheet)
+{
     for (int i = 0; i < 24; i++)
     {
         for (int j = 0; j < 10; j++)
         {
             string cellValue = sheet.getCell(i, j)->getString();
             if (cellValue != "" && cellValue.at(0) == '=')
-            {   
-                vector<int> vec;
-                vec = s.getCursor();
+            {
+                vector<int> vec = s.getCursor();
+                ;
                 vector<CellAdress> vecCa;
                 vecCa.push_back(CellAdress(vec.at(0) + 'A', vec.at(1) + 1));
                 CellValueBase *y = new CellFormula<string>(cellValue, formule(sheet, cellValue, vecCa));
@@ -71,18 +68,20 @@ void SheetController::updateFormules(SheetView &s, Sheet &sheet){
     }
 }
 
-// slaat de huidige toestand van het programma op 
-void SheetController::savefile(Sheet & sheet, SheetView &s){
+// slaat de huidige toestand van het programma op
+void SheetController::savefile(Sheet &sheet, SheetView &s)
+{
     filebuf fb;
     string file;
     prompt(sheet, s, file, true); // gebruiker krijgt prompt voor filenaam
-    fb.open(file, ios::out); // opent file
+    fb.open(file, ios::out);      // opent file
     ostream os(&fb);
-    sheet.serialize(os); 
+    sheet.serialize(os);
 }
 
 // maakt sheet op basis van een file
-void SheetController::readfile(Sheet & sheet, SheetView & s){
+void SheetController::readfile(Sheet &sheet, SheetView &s)
+{
     int x = 0; // aantal kolommen
     int y = 0; // aantal rijen
     string file;
@@ -90,24 +89,26 @@ void SheetController::readfile(Sheet & sheet, SheetView & s){
     ifstream myReadFile;
     myReadFile.open(file);
 
-    if (myReadFile.is_open()) {
+    if (myReadFile.is_open())
+    {
         myReadFile >> x; // update aantal kolommen vanuit file
         myReadFile >> y; // update aantal rijen vanuit file
-        if(x > 0 && y > 0){
+        if (x > 0 && y > 0)
+        {
             Sheet s(x, y);
             s.deserialize(myReadFile);
             sheet = s; // update sheet
         }
-
     }
     myReadFile.close(); //close ifstream
-} 
+}
 
 // laat nieuw scherm zien met een border.
 // en een bewerkbare text &inhoud
-// Als de bool file meegegeven is dan zal er 
+// Als de bool file meegegeven is dan zal er
 // "write filename" in het scherm gezien laten worden
-void SheetController::prompt(Sheet &sheet, SheetView &s, string & inhoud, bool file){
+void SheetController::prompt(Sheet &sheet, SheetView &s, string &inhoud, bool file)
+{
     vector<int> vec;
     WINDOW *win = s.getWindow();
     vec = s.getCursor();
@@ -118,12 +119,14 @@ void SheetController::prompt(Sheet &sheet, SheetView &s, string & inhoud, bool f
     wrefresh(popup);
 
     // als popup bedoelt is voor het bewerken van een cel
-    if(!file){
+    if (!file)
+    {
         Cell *d = sheet.getCell(vec.at(0), vec.at(1)); // haal Cell waarin nieuw scherm aangemaakt is op
-        inhoud = d->getString(); // zet inhoud op cellwaarde
+        inhoud = d->getString();                       // zet inhoud op cellwaarde
     }
     // anders
-    else{
+    else
+    {
         inhoud = "write filename";
     }
     wmove(popup, 1, 1);
@@ -132,9 +135,10 @@ void SheetController::prompt(Sheet &sheet, SheetView &s, string & inhoud, bool f
 
 // regelt input voor nieuw input scherm
 // dit scherm kan gesloten worden door op enter te drukken
-void SheetController::inputPrompt(WINDOW* popup, WINDOW* win, string & inhoud){
+void SheetController::inputPrompt(WINDOW *popup, WINDOW *win, string &inhoud)
+{
     const char *c = inhoud.c_str(); // convert inhoud naar char*
-    waddstr(popup, c); // drukt inhoud af in popupscherm
+    waddstr(popup, c);              // drukt inhoud af in popupscherm
     wrefresh(popup);
     int key; // gedrukte toets
     while ((key = wgetch(win)) != '\n')
@@ -211,20 +215,20 @@ string SheetController::formule(Sheet &sheet, string cellValue, vector<CellAdres
     if (soort == "=SUM")
     {
         getline(ss, reference, ')');
-        Range range(reference, &sheet); // maakt range aan
-        vecCa.push_back(range.getBegin()); // push begin van range in vecCA
+        Range range(reference, &sheet);         // maakt range aan
+        vecCa.push_back(range.getBegin());      // push begin van range in vecCA
         return berekenSom(sheet, range, vecCa); // berekent som
     }
     if (soort == "=AVG")
     {
         getline(ss, reference, ')');
-        Range range(reference, &sheet);// push begin van range in vecCA
+        Range range(reference, &sheet);         // push begin van range in vecCA
         return berekenAvg(sheet, range, vecCa); // berekent gemiddelde
     }
     if (soort == "=COUNT")
     {
         getline(ss, reference, ')');
-        Range range(reference, &sheet);// push begin van range in vecCA
+        Range range(reference, &sheet);           // push begin van range in vecCA
         return berekenCount(sheet, range, vecCa); // berekent count
     }
     return nullptr;
@@ -232,10 +236,10 @@ string SheetController::formule(Sheet &sheet, string cellValue, vector<CellAdres
 
 // berekent de som van alle cellen in een Range
 // als daarin formules zitten worden die eerst opnieuw berekent
-// en returnt deze waarde als een string 
+// en returnt deze waarde als een string
 string SheetController::berekenSom(Sheet &sheet, Range range, vector<CellAdress> vecCa)
 {
-    RangeIterator rir = range.begin(); // begin iterator range
+    RangeIterator rir = range.begin();  // begin iterator range
     RangeIterator rirEnd = range.end(); // end iterator range
     string inh = "";
     float value = 0; // getal waarmee wordt gerekent
@@ -290,11 +294,8 @@ string SheetController::berekenAvg(Sheet &sheet, Range range, vector<CellAdress>
             {
                 if (inh.at(0) == '=')
                 {
-                    for (CellAdress res : vecCa)
-                    {
-                        if (rir.getCellAdress().getKolomnummer() == res.getKolomnummer() && rir.getCellAdress().getRijnummer() == res.getRijnummer())
-                            return "ERR";
-                    }
+                    if (containsCellAdress(vecCa, rir.getCellAdress()))
+                        return "ERR";
                     vecCa.push_back(rir.getCellAdress());
                     string form = formule(sheet, inh, vecCa);
                     if (form == "ERR")
@@ -306,16 +307,7 @@ string SheetController::berekenAvg(Sheet &sheet, Range range, vector<CellAdress>
                 {
                     value += stof(inh.c_str());
                 }
-                bool digit = true;
-                for (int i = 0; i < inh.size(); i++)
-                {
-                    if (!(isdigit(inh.at(i)) || inh.at(i) == ',' || inh.at(i) == '.'))
-                        digit = false;
-                }
-                if (digit)
-                {
-                    count++;
-                }
+                stringIsDigit(inh, count); // kijkt of inh een digit is
             }
             ++rir;
         }
@@ -326,7 +318,6 @@ string SheetController::berekenAvg(Sheet &sheet, Range range, vector<CellAdress>
         return "ERR";
     }
 }
-
 // telt hoeveel cellen exclusief nummers bevatten in een
 // range en returnt deze waarde als een string
 string SheetController::berekenCount(Sheet &sheet, Range range, vector<CellAdress> vecCa)
@@ -345,24 +336,12 @@ string SheetController::berekenCount(Sheet &sheet, Range range, vector<CellAdres
             {
                 if (inh.at(0) == '=')
                 {
-                    for (CellAdress res : vecCa)
-                    {
-                        if (rir.getCellAdress().getKolomnummer() == res.getKolomnummer() && rir.getCellAdress().getRijnummer() == res.getRijnummer())
-                            return "ERR";
-                    }
+                    if (containsCellAdress(vecCa, rir.getCellAdress()))
+                        return "ERR";
                     vecCa.push_back(rir.getCellAdress());
                     inh = formule(sheet, inh, vecCa);
                 }
-                bool digit = true;
-                for (int i = 0; i < inh.size(); i++)
-                {
-                    if (!(isdigit(inh.at(i)) || inh.at(i) == ',' || inh.at(i) == '.'))
-                        digit = false;
-                }
-                if (digit)
-                {
-                    count++;
-                }
+                stringIsDigit(inh, count); // kijkt of inh een digit is
             }
             ++rir;
         }
@@ -380,7 +359,6 @@ void SheetController::celbewerking(Sheet &sheet, SheetView &s)
     vector<int> vec;
     string inhoud = "";
     vec = s.getCursor();
-   
 
     prompt(sheet, s, inhoud, false);
 
@@ -398,4 +376,30 @@ void SheetController::celbewerking(Sheet &sheet, SheetView &s)
     }
     sheet.getCell(vec.at(0), vec.at(1))->setpointer(y);
     s.tekenheaders();
+}
+// verhoogt count met 1 als inh een digit is
+// doet niets als de string geen digit is
+void SheetController::stringIsDigit(string inh, int &count)
+{
+    bool digit = true;
+    for (int i = 0; i < inh.size(); i++)
+    {
+        if (!(isdigit(inh.at(i)) || inh.at(i) == ',' || inh.at(i) == '.'))
+            digit = false;
+    }
+    if (digit)
+    {
+        count++;
+    }
+    return;
+}
+// checkt of een CellAdress in de vector zit
+bool SheetController::containsCellAdress(vector<CellAdress> vecCa, CellAdress ca)
+{
+    for (CellAdress res : vecCa)
+    {
+        if (ca.getKolomnummer() == res.getKolomnummer() && ca.getRijnummer() == res.getRijnummer())
+            return true;
+    }
+    return false;
 }

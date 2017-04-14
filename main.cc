@@ -9,7 +9,6 @@ int main()
     // ui
      // sheet initialization
     Sheet sheet(24, 80);
-    int k = 0;
     static const int lines(24);
     static const int cols(160);
 
