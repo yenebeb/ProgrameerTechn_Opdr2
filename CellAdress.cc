@@ -10,7 +10,10 @@ CellAdress::CellAdress(char colnaam, int rijnmr)
 }
 CellAdress::CellAdress()
 {
+
 }
+
+// maakt celladress, met input celreferentie
 CellAdress::CellAdress(std::string celreferentie)
 {
 
@@ -23,17 +26,21 @@ CellAdress::~CellAdress()
 {
     //dtor
 }
+
+// returns kolomnummer
 int CellAdress::getKolomnummer()
 {
     return kolomnummer;
 }
+
+// returns rijnummer
 int CellAdress::getRijnummer()
 {
     return rijnummer;
 }
 
+// maakt celladress vanuit celreferentie, en returnt de gemaakte CellAdess
 CellAdress CreateFromReference(std::string celreferentie)
 {
-    //TODO: throw exception
     return CellAdress(celreferentie);
 }

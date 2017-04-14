@@ -1,7 +1,6 @@
 
 #include <vector>
 #include "Sheet.h"
-#include "SheetObserver.h"
 #include <fstream>
 
 using namespace std;
@@ -17,16 +16,6 @@ Cell* Sheet::getCell(int x, int y){
     return kolom->getCell(y);
 }
 
-void Sheet::cellVerandert(const Cell &cell){
-	if(sheeto.size() > 0){
-		for(vector<SheetObserver*>::iterator it = sheeto.begin(); it != sheeto.end(); ++it) {
-			SheetObserver* x =*it;
-			x->cellChanged(cell);
-		}
-	}
-}
-
-
 void Sheet::serialize(std:: ostream &output){
     output << kolommen.size() << " " << kolommen.at(0)->sizeVec();
     output << "\n";
@@ -39,21 +28,16 @@ void Sheet::serialize(std:: ostream &output){
     output << i+1 << " |";
     kolommen.at(i)->serialize(output);
     output << "|";
-    }
 
-void Sheet::deserialize(std::ifstream &output){
-    int x = 0;
-
-    while(output.peek() != '|' && x < 40){
-        output >> x;
-        kolommen.at(x-1)->deserialize(output);
-    }
 }
 
+void Sheet::deserialize(std::ifstream &input){
+    int x = 0;
 
-
-void Sheet::addObserver(SheetObserver* ob){
-	sheeto.push_back(ob);
+    while(input.peek() != '|' && x < 40){
+        input >> x;
+        kolommen.at(x-1)->deserialize(input);
+    }
 }
 
 vector<Column*>::iterator Sheet::begin(){

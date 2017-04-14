@@ -3,23 +3,26 @@
 
 #include "Column.h"
 #include "Cell.h"
-#include "SheetObserver.h"
 
 class Sheet : public Serializable {
 private:
     vector<Column*> kolommen;
-    vector<SheetObserver*> sheeto;
 public:
-    // constructor, makes x kolommen met grote y
+    // constructor, maakt sheet met
+    // x kolommen en y rijen
     Sheet(int x, int y);
+    // returns Cell
+    // op coordinaat (x, y)
     Cell* getCell(int x, int y);
-    void cellVerandert(const Cell &cell);
-    void addObserver(SheetObserver* x);
+
+    // returns begin iterator van kolommen
     std::vector<Column*>::iterator begin();
+    // returns eind iterator van kolommen
     std::vector<Column*>::iterator end();
 
+// schrijft kolommen naar outputfile
 void serialize(std:: ostream &output);
-
+// leest kolommen van outputfile
 void deserialize(std::ifstream &output);
 
 };

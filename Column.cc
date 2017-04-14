@@ -24,9 +24,8 @@ int Column::sizeVec(){
 }
 
 void Column::serialize (std:: ostream &output){
-	//output << cellen.size();
-	int x = cellen.size() % 9;
-	char y = 'A';
+	int x = cellen.size() % 9; // x aantal cellen
+	char y = 'A'; // kolomLetter
 
 	for(int i = 0; i <= x; i++){
 		output << y << ":";
@@ -36,20 +35,21 @@ void Column::serialize (std:: ostream &output){
 	output << '|';
 }
 
-void Column::deserialize (std::ifstream &output){
-	int i;
-	char y = 'A';
-	char x;
-	char in;
-	output >> in;
-	output >> x;
+void Column::deserialize (std::ifstream &input){
+	int i; // x - y is kolomnummer
+	char y = 'A'; // de eerste kolom
+	char x; // de kolomletter
+	char in; // checkt op :
+
+	input >> in;
+	input >> x;
 
 	while(x != '|'){
 		i = x - y;
-		output >> in;
+		input >> in;
 		if(in == ':'){
-			cellen.at(i)->deserialize(output);
-			output >> x;
+			cellen.at(i)->deserialize(input);
+			input >> x;
 		}
 	}
 }

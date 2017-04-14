@@ -5,16 +5,20 @@
 class CellAdress
 {
     private:
-        int kolomnummer;
-        int rijnummer;
+        int kolomnummer; //kolomnummer
+        int rijnummer; // rijnummer
     public:
+        // default constructor
         CellAdress();
+        // construcot, colnaam = kolomnaam, rijnmr = rijnummer
         CellAdress(char colnaam, int rijnmr);
+        // constructor met celreferentie
         CellAdress(std::string celreferentie);
+        // maakt en returnt CellAdress met een celreferentie
         CellAdress CreateFromReference(std::string celreferentie);
         virtual ~CellAdress();
-        int getKolomnummer();
-        int getRijnummer();
+        int getKolomnummer(); // returns kolomnummer
+        int getRijnummer(); // returns rijnummer
 
     protected:
 };

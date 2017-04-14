@@ -14,11 +14,20 @@ class Range
     Sheet *sheet;
 
   public:
+    // defaultconstructor
     Range();
+    // constructor
     Range(std::string rangeReferentie, Sheet *sh);
+    // returns eerste CellAdress
     CellAdress getBegin();
+    // returns laatste CellAdress
     CellAdress getEnd();
+    // returns pointer naar sheet
     Sheet *getSheet();
+    // maakt range, met 
+    // beginCellAdres = x, 
+    // eindCelladres = y,
+    // op sheet p.
     Range(CellAdress x, CellAdress y, Sheet *p);
 
     typedef RangeIterator iterator;

@@ -12,13 +12,22 @@ private:
 public:
     //constructor, maakt x aantal cellen
     Column(int x);
-    Cell* getCell(int x);
-    int sizeVec();
-    std::vector<Cell*>::iterator begin();
-    std::vector<Cell*>::iterator end();
-	void serialize (std:: ostream &output);
 
-	void deserialize (std::ifstream &output);
+    // returns cell op positie x
+    Cell* getCell(int x);
+
+    // returns size of cellen
+    int sizeVec();
+
+    // returns beginiterator cellen
+    std::vector<Cell*>::iterator begin();
+    // returns enditerator cellen
+    std::vector<Cell*>::iterator end();
+
+    // writes cellen to file
+	void serialize (std:: ostream &output);
+	// reads from file
+	void deserialize (std::ifstream &intput);
 };
 
 #endif // COLUMN_H

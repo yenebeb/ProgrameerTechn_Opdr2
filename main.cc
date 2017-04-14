@@ -1,13 +1,6 @@
 #include "Sheet.h"
-#include <iostream>
-#include <sstream>
-#include "CellAdress.h"
 #include "SheetView.h"
-#include "Sheet.h"
 #include "SheetController.h"
-#include <string>
-#include <fstream>
-
 #include <curses.h>
 
 int main()

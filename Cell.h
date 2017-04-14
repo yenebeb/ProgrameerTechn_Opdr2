@@ -3,14 +3,12 @@
 
 
 #include <memory>
-#include "SheetObserver.h"
 #include "Serializable.h"
 #include <string>
 #include <sstream>
 #include <iostream>
 
 class CellValueBase;
-class SheetObserver;
 class Serializable;
 
 class Cell : public Serializable {
@@ -19,13 +17,24 @@ private :
 public :
     Cell();
     Cell(const Cell &c);
-    std::unique_ptr<CellValueBase> readpointer();
-    void setpointer(CellValueBase *y);
-    void clearpointer();
-    std::string getCalcString();
-    std::string getString();
-    void serialize (std:: ostream &output);
-    void deserialize (std::ifstream &output);
+
+    // returns pointer value
+    std::unique_ptr<CellValueBase> readpointer(); 
+    // sets value
+    void setpointer(CellValueBase *y); 
+    // sets value to nullptr
+    void clearpointer(); 
+
+    // returns string of a CellFormula
+    std::string getCalcString(); 
+    // returns string of a CellValue
+    std::string getString(); 
+    // writes to file
+    // output has the outputstream
+    void serialize (std:: ostream &output); 
+    // reads from file
+    // input has the inputstream
+    void deserialize (std::ifstream &intput); 
 
 };
 
@@ -37,9 +46,7 @@ private:
 public:
     CellValueBase();
     virtual ~CellValueBase(){};
-    virtual std::string StringStreamValue(){};
     virtual std::string stringValue(){};
-    virtual float floatValue(){};
     virtual std::string stringCalcValue(){};
 };
 
@@ -54,33 +61,22 @@ public:
     CellValue(T initial_value)
         : CellValueBase(), value(initial_value)
         { };
+    
+    T getValue(){
+        return value;
+    }
 
-std::string StringStreamValue(){
-
-    return "test";
-};
-
+// returns value als string
 std::string stringValue(){
-    std::stringstream ss;
-    ss << value;
-    std::string s(ss.str());
-    return s;
+    return getValue();
 }
 
-std::string stringCalcValue()
-    {};
-
-float floatValue(){
-    //float x = float(value);
-    return 5.3;
-}
-
-
+std::string stringCalcValue(){};
 
 };
 
 template<typename T>
-class CellFormula : public CellValueBase, public SheetObserver {
+class CellFormula : public CellValueBase {
 private:
     T value;
     T calcvalue;
@@ -88,29 +84,23 @@ public:
     CellFormula(T initial_value, T calc_value)
         : CellValueBase(), value(initial_value), calcvalue(calc_value)
         { };
-    std::string stringCalcValue(){
-        std::stringstream ss;
-        ss << calcvalue;
-        std::string s(ss.str());
-        return s;
-    };
+    T getValue(){
+        return value;
+    }
+    T getCalcValue(){
+        return calcvalue;
+    }
 
-std::string StringStreamValue(){
-
-    return "test";
+// returns calcvalue als string
+std::string stringCalcValue(){
+    return getCalcValue();
 };
 
+// returns value als string
 std::string stringValue(){
-    std::stringstream ss;
-    ss << value;
-    std::string s(ss.str());
-    return s;
+    return getValue();
 };
 
-float floatValue(){
-    //float x = float(value);
-    return 5.3;
-};
 
 };
 #endif // CELL_H

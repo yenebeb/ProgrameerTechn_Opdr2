@@ -1,8 +1,8 @@
 #include "Cell.h"
-#include "SheetObserver.h"
 #include <memory>
-#include <iostream>
 #include <fstream>
+#include <string>
+#include <iostream>
 
 using namespace std;
 Cell::Cell()
@@ -35,6 +35,8 @@ string Cell::getCalcString()
 {
     CellValueBase *y;
     y = value.get();
+
+    // if value is a nullptr, return empty string
     if(y == nullptr){
         return "";
     }
@@ -45,46 +47,37 @@ void Cell::setpointer(CellValueBase *y)
 {
     unique_ptr<CellValueBase> x(y);
     value = move(x);
-    //Sheet seintje
-    //Sheet.cellverandert(this*)
-
 }
 
 void Cell::serialize (ostream &output){
-
-    std::string inhoud = this->getString(); //ophalen en afkappen na 8 tekens
-   
+    // getstring from cellValueBase
+    std::string inhoud = this->getString();
     inhoud += "|";
     output << inhoud;
 }
 
-void Cell::deserialize (std::ifstream &output){
+
+void Cell::deserialize (std::ifstream &input){
     char x;
     CellValueBase *y;
     string inhoud = "";
-    output.get(x);
+    input.get(x);
     while(x != '|'){
         inhoud += x;
-        output.get(x);
-
+        input.get(x);
     }
-    if(inhoud.find_first_not_of(' ') == std::string::npos){
-        inhoud = "";
-    }
-
-        size_t search = inhoud.find("=");
-        if(search != string::npos){
-            y = new CellFormula<string>(inhoud, "");
-        }
-        else{
-            y = new CellValue<string>(inhoud);
-        }
+    size_t search = inhoud.find("=");
     
-
+    // if '=' has been found, make CellFormula
+    if(search != string::npos){
+        y = new CellFormula<string>(inhoud, "");
+    }
+    // else make CellValue
+    else{
+        y = new CellValue<string>(inhoud);
+    }
     this->setpointer(y);
 }
-
-
 
 void Cell::clearpointer()
 {
