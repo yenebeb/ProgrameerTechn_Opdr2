@@ -55,17 +55,7 @@ class RangeIterator : public std::iterator<std::input_iterator_tag, int>
     {
         return !operator==(Riter);
     }
-    Cell *operator->() const
-    {
-        char k = range.getBegin().getKolomnummer();
-        char k1 = range.getEnd().getKolomnummer();
-        int i = range.getBegin().getRijnummer();
-        int i1 = range.getEnd().getRijnummer();
 
-        char m = offset % (k1 - k);
-        int l = offset / (i1 - i);
-        return range.getSheet()->getCell((int)(k + m), i + l);
-    }
     Cell &operator*() const
     {
         int k = range.getBegin().getKolomnummer();
