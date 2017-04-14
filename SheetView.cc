@@ -17,17 +17,19 @@ SheetView::SheetView(int lines, int cols)
 
 void SheetView::tekenheaders()
 {
-    int q = 1;
+    int sideHeaderInt = 1;
     char topHeaderChar = 'A';
     const char *topHeader = &topHeaderChar;
 
     attr_t old_attr; /* Huidige settings onthouden */
     short old_pair;
     wattr_get(win, &old_attr, &old_pair, NULL);
-
-    wattron(win, A_STANDOUT);
     wmove(win, 0, 0);
+    waddstr(win, "        "); // hoekje links boven
+    wattron(win, A_STANDOUT);
+
     //teken de top header
+
     for (int j = 0; j < 80; j++)
     {
         wmove(win, 0, j);
@@ -46,14 +48,14 @@ void SheetView::tekenheaders()
     {
         wmove(win, i, 0);
         string s = "   ";
-        s += to_string(q);
+        s += to_string(sideHeaderInt);
         for (int k = s.size(); k < 8; k++)
         {
             s += " ";
         }
         const char *x = s.c_str();
         waddstr(win, x);
-        q++;
+        sideHeaderInt++;
     }
     refresh();
     wattr_set(win, old_attr, old_pair, NULL);
