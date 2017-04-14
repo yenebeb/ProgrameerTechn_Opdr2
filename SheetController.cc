@@ -3,6 +3,8 @@
 #include "Sheet.h"
 #include "SheetView.h"
 #include <curses.h>
+#include <iostream>
+#include <fstream>
 SheetController::SheetController()
 {
 }
@@ -16,28 +18,23 @@ int SheetController::run(SheetView &s, Sheet &sheet)
     keypad(win, TRUE);
     int x = s.getchar();
 
+
     while (x != 'q')
     {
 
         switch (x)
         {
-        case 'n':
-            for (int i = 0; i < 24; i++)
-            {
-                for (int j = 0; j < 10; j++)
-                {
-                    string cellValue = sheet.getCell(i, j)->getString();
-                    if (cellValue != "" && cellValue.at(0) == '=')
-                    {
-                        //  CellValueBase *y = new CellFormula<string>(cellValue, formule(sheet, cellValue));
-                        // sheet.getCell(i, j)->setpointer(y);
-                    }
-                }
-            }
+        case 'd':
+            readfile(sheet, s);
+            updateFormules(s, sheet);
 
+            break;
+        case 's':
+            savefile(sheet, s);
             break;
         case '\n':
             celbewerking(sheet, s);
+            updateFormules(s, sheet);
             break;
         case KEY_UP:
         case KEY_DOWN:
@@ -49,6 +46,101 @@ int SheetController::run(SheetView &s, Sheet &sheet)
         s.tekeninh(&sheet);
 
         x = s.getchar();
+    }
+}
+
+void SheetController::updateFormules(SheetView &s, Sheet &sheet){
+    for (int i = 0; i < 24; i++)
+    {
+        for (int j = 0; j < 10; j++)
+        {
+            string cellValue = sheet.getCell(i, j)->getString();
+            if (cellValue != "" && cellValue.at(0) == '=')
+            {   
+                std::vector<int> vec;
+                vec = s.getCursor();
+                vector<CellAdress> vecCa;
+                vecCa.push_back(CellAdress(vec.at(0) + 'A', vec.at(1) + 1));
+                CellValueBase *y = new CellFormula<string>(cellValue, formule(sheet, cellValue, vecCa));
+                sheet.getCell(i, j)->setpointer(y);
+            }
+        }
+    }
+}
+
+void SheetController::savefile(Sheet & sheet, SheetView &s){
+    std::filebuf fb;
+    string file;
+    prompt(sheet, s, file);
+    fb.open(file, std::ios::out);
+    std::ostream os(&fb);
+    sheet.serialize(os);
+}
+
+void SheetController::prompt(Sheet &sheet, SheetView &s, string & file){
+    std::vector<int> vec;
+    WINDOW *win = s.getWindow();
+    vec = s.getCursor();
+    WINDOW *popup = newwin(3, 19, 1, 1);
+    mvwin(popup, vec.at(0), vec.at(1) * 8 + 3);
+    wmove(popup, 1, 1);
+    wborder(popup, '|', '|', '-', '-', '+', '+', '+', '+');
+    wrefresh(popup);
+
+    // input van user naar cell en display ook pak oude en plaats
+    string inhoud = " write filename";
+    wmove(popup, 1, 1);
+    inputPrompt(popup, win, inhoud);
+    file = inhoud;
+}
+
+void SheetController::inputPrompt(WINDOW* popup, WINDOW* win, string & inhoud){
+    const char *c = inhoud.c_str();
+    waddstr(popup, c);
+    wrefresh(popup);
+    int key;
+    while ((key = wgetch(win)) != '\n')
+    {
+        wmove(popup, 1, 1);
+        c = "                 ";
+        waddstr(popup, c);
+        if (key == KEY_BACKSPACE)
+        {
+            if (inhoud.size())
+            {
+                inhoud.pop_back();
+            }
+        }
+        else if (inhoud.size() < 17)
+        {
+            inhoud += key;
+        }
+        c = inhoud.c_str();
+        wmove(popup, 1, 1);
+        waddstr(popup, c);
+        wrefresh(popup);
+    }
+}
+
+void SheetController::readfile(Sheet & sheet, SheetView & s){
+    int x =0;
+    int y = 0;
+    string file;
+    prompt(sheet, s, file);
+    ifstream myReadFile;
+    myReadFile.open(file);
+    if (myReadFile.is_open()) {
+        myReadFile >> x;
+        myReadFile >> y;
+
+        cout << x;
+        cout << y;
+        if(x > 0 && y > 0){
+            Sheet s(24, 80);
+            s.deserialize(myReadFile);
+            sheet = s;
+        }
+
     }
 }
 void SheetController::moveCursor(int x, SheetView &s)
@@ -123,14 +215,6 @@ string SheetController::berekenSom(Sheet &sheet, Range range, vector<CellAdress>
     RangeIterator rirEnd = range.end();
     string inh = "";
     int value = 0;
-    // int test = rir.getCellAdress().getKolomnummer();
-    // int test1 = rir.getCellAdress().getRijnummer();
-    int test = vecCa.at(0).getKolomnummer();
-    int test1 = vecCa.at(0).getRijnummer();
-    CellValueBase *y = new CellValue<string>(std::to_string(test));
-    CellValueBase *z = new CellValue<string>(std::to_string(test1));
-    sheet.getCell(5, 4)->setpointer(y);
-    sheet.getCell(5, 5)->setpointer(z);
     try
     {
         while (rir != rirEnd)
@@ -283,31 +367,8 @@ void SheetController::celbewerking(Sheet &sheet, SheetView &s)
     Cell *d = sheet.getCell(vec.at(0), vec.at(1));
     string inhoud = d->getString();
     wmove(popup, 1, 1);
-    const char *c = inhoud.c_str();
-    waddstr(popup, c);
-    wrefresh(popup);
-    int key;
-    while ((key = wgetch(win)) != '\n')
-    {
-        wmove(popup, 1, 1);
-        c = "                 ";
-        waddstr(popup, c);
-        if (key == KEY_BACKSPACE)
-        {
-            if (inhoud.size())
-            {
-                inhoud.pop_back();
-            }
-        }
-        else if (inhoud.size() < 17)
-        {
-            inhoud += key;
-        }
-        c = inhoud.c_str();
-        wmove(popup, 1, 1);
-        waddstr(popup, c);
-        wrefresh(popup);
-    }
+    inputPrompt(popup, win, inhoud);
+
     CellValueBase *y;
     if (inhoud != "" && inhoud.at(0) == '=')
     {
@@ -322,3 +383,4 @@ void SheetController::celbewerking(Sheet &sheet, SheetView &s)
     sheet.getCell(vec.at(0), vec.at(1))->setpointer(y);
     s.tekenheaders();
 }
+    // input van user naar cell en display ook pak oude en plaats

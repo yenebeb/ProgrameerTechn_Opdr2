@@ -12,6 +12,13 @@ public:
 	int run(SheetView& s, Sheet& sheet);
 	void moveCursor(int x, SheetView& s); 
 	void celbewerking(Sheet& sheet, SheetView& s);
+	void savefile(Sheet& sheet, SheetView & s);
+	void readfile(Sheet& sheet, SheetView & s);
+	void inputPrompt(WINDOW* popup, WINDOW* win, string & inhoud);
+	void prompt(Sheet &sheet, SheetView &s, string & file);
+	void updateFormules(SheetView &s, Sheet &sheet);
+
+
 	//string somberekenen(Sheet& sheet, int y, int x);
 	std::string formule(Sheet &sheet, string value, vector<CellAdress> vecCa);
 	std::string berekenSom(Sheet &sheet, Range range,vector<CellAdress> vecCa);
