@@ -243,8 +243,8 @@ string SheetController::berekenSom(Sheet &sheet, Range range, vector<CellAdress>
     {
         while (rir != rirEnd)
         {
-            Cell *z = &*rir;
-            inh = z->getString();
+            Cell *z = &*rir; // haalt cell op van range
+            inh = z->getString(); // 
             if (inh != "")
             {
                 if (inh.at(0) == '=')
@@ -379,8 +379,7 @@ void SheetController::celbewerking(Sheet &sheet, SheetView &s)
 {
     vector<int> vec;
     string inhoud = "";
-    vec = s.getCursor();
-   
+    vec = s.getCursor(); // sla cursorplaats op in vec
 
     prompt(sheet, s, inhoud, false);
 
@@ -392,6 +391,7 @@ void SheetController::celbewerking(Sheet &sheet, SheetView &s)
         vecCa.push_back(CellAdress(vec.at(0) + 'A', vec.at(1) + 1));
         y = new CellFormula<string>(inhoud, formule(sheet, inhoud, vecCa));
     }
+    // anders kan er een CellValue worden gemaakt
     else
     {
         y = new CellValue<string>(inhoud);

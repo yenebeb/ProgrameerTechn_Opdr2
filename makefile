@@ -7,7 +7,7 @@ OBJS = Cell.o CellAdress.o Column.o Sheet.o Range.o SheetView.o main.o SheetCont
 opdr: $(OBJS)
 	$(CC) -Wall $(OBJS) -o Spread -lncurses 
 
-Cell.o: Cell.cc Cell.h SheetObserver.h
+Cell.o: Cell.cc Cell.h
 	$(CC) $(CompileParms) Cell.cc
 
 CellAdress.o: CellAdress.cc CellAdress.h
@@ -32,4 +32,4 @@ main.o: main.cc Sheet.cc Sheet.h Range.cc Range.h CellAdress.cc CellAdress.h She
 	$(CC) $(CompileParms) main.cc -lncursus
 
 clean:
-	rm *.o
+	rm *.o *.txt

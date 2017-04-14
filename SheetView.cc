@@ -15,6 +15,7 @@ SheetView::SheetView(int lines, int cols)
     win = newwin(lines, cols, 0, 0);
 }
 
+// tekent de headers van sheet
 void SheetView::tekenheaders()
 {
     int sideHeaderInt = 1;
@@ -29,7 +30,6 @@ void SheetView::tekenheaders()
     wattron(win, A_STANDOUT);
 
     //teken de top header
-
     for (int j = 0; j < 80; j++)
     {
         wmove(win, 0, j);
@@ -61,6 +61,7 @@ void SheetView::tekenheaders()
     wattr_set(win, old_attr, old_pair, NULL);
 }
 
+// tekent inhoud van cellen op het scherm
 void SheetView::tekeninh(Sheet *sheet)
 {
     attr_t old_attr; /* Huidige settings onthouden */
@@ -77,10 +78,13 @@ void SheetView::tekeninh(Sheet *sheet)
                 {
                     wattron(win, A_STANDOUT);
                 }
-                Cell *d = sheet->getCell(i - 1, (j - 8) / 8);
+                Cell *d = sheet->getCell(i - 1, (j - 8) / 8); // getcell op huidige plaats
                 string inhoud = d->getString().substr(0,8); //ophalen en afkappen na 8 tekens
+                
+                // als string inhoud niet leeg is, en begint met =
+                // getCalcString
                 if(inhoud != "" && inhoud.at(0) == '='){
-                    inhoud = d->getCalcString().substr(0,8);
+                    inhoud = d->getCalcString().substr(0,8); 
                 }
                 for(int k = inhoud.size(); k < 6; k++){ // vult de string met spaties aan de voorkant als die minder dan 6 characters lang is
                     inhoud = " "+ inhoud;
@@ -100,11 +104,14 @@ void SheetView::tekeninh(Sheet *sheet)
     wmove(win, 1 + cursor.at(0), 8 + cursor.at(1) * 8);
 }
 
+// returns de huidige locatie van de cursor
 std::vector<int> SheetView::getCursor()
 {
     return cursor;
 }
 
+// zet de cursor op nieuwe locatie
+// cur
 void SheetView::setCursor(std::vector<int> cur)
 {
     cursor = cur;
@@ -112,6 +119,8 @@ void SheetView::setCursor(std::vector<int> cur)
     refresh();
 }
 
+// lees character van keypad
+// returns int waarde van de character
 int SheetView::getchar()
 {
     int ch;
@@ -121,6 +130,7 @@ int SheetView::getchar()
     return ch;
 }
 
+// returns window
 WINDOW *SheetView::getWindow()
 {
     return win;

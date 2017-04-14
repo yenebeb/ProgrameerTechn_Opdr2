@@ -2,18 +2,23 @@
 #include <iostream>
 #include <sstream>
 
+// Constructor CellAdress
+// maakt celadres naar cel op basis van
+// kolomnaam, en rijnummer
 CellAdress::CellAdress(char colnaam, int rijnmr)
 {
     kolomnummer = colnaam - 'A';
     rijnummer = rijnmr - 1;
-    //ctor
 }
+
 CellAdress::CellAdress()
 {
 
 }
 
-// maakt celladress, met input celreferentie
+// maakt celladress, 
+// met input
+// string celreferentie
 CellAdress::CellAdress(std::string celreferentie)
 {
     kolomnummer = celreferentie.at(0) - 'A'; 

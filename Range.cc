@@ -19,6 +19,7 @@ Range::Range(string rangeReferentie, Sheet *sh){
     EndCellAdress = CellAdress(reference);
     sheet = sh;
 }
+
 // returnt de BeginCellAdress
 CellAdress Range::getBegin()
 {
@@ -34,6 +35,7 @@ Sheet *Range::getSheet()
 {
     return sheet;
 }
+
 // Range constructer
 Range::Range(CellAdress ca1, CellAdress ca2, Sheet *sh)
 {

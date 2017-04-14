@@ -24,7 +24,7 @@ public:
     // returns enditerator cellen
     std::vector<Cell*>::iterator end();
 
-    // writes cellen to file
+    // schrijft cellen to file
 	void serialize (std:: ostream &output);
 	// reads from file
 	void deserialize (std::ifstream &intput);

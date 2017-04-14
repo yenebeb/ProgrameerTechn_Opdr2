@@ -64,6 +64,7 @@ void Cell::deserialize (std::ifstream &input){
     CellValueBase *y; // de cellValueBase die aangemaakt moet worden
     string inhoud = "";
     input.get(x); 
+    
     // lees character en sla het op in sting inhoud
     // totdat x gelijk is aan | 
     while(x != '|'){
