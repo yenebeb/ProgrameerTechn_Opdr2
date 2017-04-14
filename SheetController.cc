@@ -103,7 +103,10 @@ void SheetController::readfile(Sheet & sheet, SheetView & s){
     myReadFile.close(); //close ifstream
 } 
 
-// laat nieuw scherm zien
+// laat nieuw scherm zien met een border.
+// en een bewerkbare text &inhoud
+// Als de bool file meegegeven is dan zal er 
+// "write filename" in het scherm gezien laten worden
 void SheetController::prompt(Sheet &sheet, SheetView &s, string & inhoud, bool file){
     vector<int> vec;
     WINDOW *win = s.getWindow();
@@ -127,7 +130,8 @@ void SheetController::prompt(Sheet &sheet, SheetView &s, string & inhoud, bool f
     inputPrompt(popup, win, inhoud); // invoer van popup
 }
 
-// regelt input voor nieuw scherm
+// regelt input voor nieuw input scherm
+// dit scherm kan gesloten worden door op enter te drukken
 void SheetController::inputPrompt(WINDOW* popup, WINDOW* win, string & inhoud){
     const char *c = inhoud.c_str(); // convert inhoud naar char*
     waddstr(popup, c); // drukt inhoud af in popupscherm
@@ -159,6 +163,7 @@ void SheetController::inputPrompt(WINDOW* popup, WINDOW* win, string & inhoud){
 }
 
 // verplaatsen van cursor
+// dmv de pijltjes toetsen
 void SheetController::moveCursor(int x, SheetView &s)
 {
     vector<int> vec; //houd cursorplaats bij
@@ -193,7 +198,9 @@ void SheetController::moveCursor(int x, SheetView &s)
 }
 
 // pakt als invoer een formule string
-// bijv. "=SUM(A1:B5)"
+// bijv. "=SUM(A1:B5)" "=AVG(B1:B5)" "=COUNT(C2:D4)"
+// en returnt daarna de uitgerekende waarde van
+// die formule als een string
 string SheetController::formule(Sheet &sheet, string cellValue, vector<CellAdress> vecCa)
 {
     stringstream ss;
@@ -225,6 +232,7 @@ string SheetController::formule(Sheet &sheet, string cellValue, vector<CellAdres
 
 // berekent de som van alle cellen in een Range
 // als daarin formules zitten worden die eerst opnieuw berekent
+// en returnt deze waarde als een string 
 string SheetController::berekenSom(Sheet &sheet, Range range, vector<CellAdress> vecCa)
 {
     RangeIterator rir = range.begin(); // begin iterator range
@@ -264,6 +272,7 @@ string SheetController::berekenSom(Sheet &sheet, Range range, vector<CellAdress>
 
 // berekent het gemiddelde van alle cellen in een Range
 // als daarin formules zitten worden die eerst opnieuw berekent
+// en returnt deze waarde als een string
 string SheetController::berekenAvg(Sheet &sheet, Range range, vector<CellAdress> vecCa)
 {
     RangeIterator rir = range.begin();
@@ -319,7 +328,7 @@ string SheetController::berekenAvg(Sheet &sheet, Range range, vector<CellAdress>
 }
 
 // telt hoeveel cellen exclusief nummers bevatten in een
-// range
+// range en returnt deze waarde als een string
 string SheetController::berekenCount(Sheet &sheet, Range range, vector<CellAdress> vecCa)
 {
     RangeIterator rir = range.begin();
@@ -376,7 +385,7 @@ void SheetController::celbewerking(Sheet &sheet, SheetView &s)
     prompt(sheet, s, inhoud, false);
 
     CellValueBase *y;
-    // Als inhoud van cel = bevat, maak dan cellFormula
+    // Als inhoud van cel '=' bevat, maak dan cellFormula
     if (inhoud != "" && inhoud.at(0) == '=')
     {
         vector<CellAdress> vecCa;
@@ -390,4 +399,3 @@ void SheetController::celbewerking(Sheet &sheet, SheetView &s)
     sheet.getCell(vec.at(0), vec.at(1))->setpointer(y);
     s.tekenheaders();
 }
-    // input van user naar cell en display ook pak oude en plaats
