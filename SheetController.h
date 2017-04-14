@@ -15,7 +15,7 @@ public:
 	void savefile(Sheet& sheet, SheetView & s);
 	void readfile(Sheet& sheet, SheetView & s);
 	void inputPrompt(WINDOW* popup, WINDOW* win, string & inhoud);
-	void prompt(Sheet &sheet, SheetView &s, string & file);
+	void prompt(Sheet &sheet, SheetView &s, string & string, bool file);
 	void updateFormules(SheetView &s, Sheet &sheet);
 
 

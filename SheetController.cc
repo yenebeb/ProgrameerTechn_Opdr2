@@ -24,7 +24,7 @@ int SheetController::run(SheetView &s, Sheet &sheet)
 
         switch (x)
         {
-        case 'd':
+        case 'r':
             readfile(sheet, s);
             updateFormules(s, sheet);
 
@@ -49,6 +49,7 @@ int SheetController::run(SheetView &s, Sheet &sheet)
     }
 }
 
+// update alle cellFormula
 void SheetController::updateFormules(SheetView &s, Sheet &sheet){
     for (int i = 0; i < 24; i++)
     {
@@ -68,16 +69,41 @@ void SheetController::updateFormules(SheetView &s, Sheet &sheet){
     }
 }
 
+// slaat de huidige toestand van het programma op 
 void SheetController::savefile(Sheet & sheet, SheetView &s){
     std::filebuf fb;
     string file;
-    prompt(sheet, s, file);
+    prompt(sheet, s, file, true);
     fb.open(file, std::ios::out);
     std::ostream os(&fb);
     sheet.serialize(os);
 }
 
-void SheetController::prompt(Sheet &sheet, SheetView &s, string & file){
+// maakt sheet op basis van een file
+void SheetController::readfile(Sheet & sheet, SheetView & s){
+    int x =0;
+    int y = 0;
+    string file;
+    prompt(sheet, s, file, true);
+    ifstream myReadFile;
+    myReadFile.open(file);
+    if (myReadFile.is_open()) {
+        myReadFile >> x;
+        myReadFile >> y;
+
+        cout << x;
+        cout << y;
+        if(x > 0 && y > 0){
+            Sheet s(24, 80);
+            s.deserialize(myReadFile);
+            sheet = s;
+        }
+
+    }
+}
+
+// laat nieuw scherm zien
+void SheetController::prompt(Sheet &sheet, SheetView &s, string & inhoud, bool file){
     std::vector<int> vec;
     WINDOW *win = s.getWindow();
     vec = s.getCursor();
@@ -86,14 +112,17 @@ void SheetController::prompt(Sheet &sheet, SheetView &s, string & file){
     wmove(popup, 1, 1);
     wborder(popup, '|', '|', '-', '-', '+', '+', '+', '+');
     wrefresh(popup);
-
-    // input van user naar cell en display ook pak oude en plaats
-    string inhoud = " write filename";
+    if(!file){
+        Cell *d = sheet.getCell(vec.at(0), vec.at(1));
+        inhoud = d->getString();
+    }
+    else{
+        inhoud = "write filename";
+    }
     wmove(popup, 1, 1);
-    inputPrompt(popup, win, inhoud);
-    file = inhoud;
-}
+    inputPrompt(popup, win, inhoud);}
 
+// regelt input voor nieuw scherm
 void SheetController::inputPrompt(WINDOW* popup, WINDOW* win, string & inhoud){
     const char *c = inhoud.c_str();
     waddstr(popup, c);
@@ -122,27 +151,7 @@ void SheetController::inputPrompt(WINDOW* popup, WINDOW* win, string & inhoud){
     }
 }
 
-void SheetController::readfile(Sheet & sheet, SheetView & s){
-    int x =0;
-    int y = 0;
-    string file;
-    prompt(sheet, s, file);
-    ifstream myReadFile;
-    myReadFile.open(file);
-    if (myReadFile.is_open()) {
-        myReadFile >> x;
-        myReadFile >> y;
-
-        cout << x;
-        cout << y;
-        if(x > 0 && y > 0){
-            Sheet s(24, 80);
-            s.deserialize(myReadFile);
-            sheet = s;
-        }
-
-    }
-}
+// verplaatsen van cursor
 void SheetController::moveCursor(int x, SheetView &s)
 {
     std::vector<int> vec;
@@ -207,6 +216,7 @@ string SheetController::formule(Sheet &sheet, string cellValue, vector<CellAdres
     }
     return nullptr;
 }
+
 // berekent de som van alle cellen in een Range
 // als daarin formules zitten worden die eerst opnieuw berekent
 string SheetController::berekenSom(Sheet &sheet, Range range, vector<CellAdress> vecCa)
@@ -245,6 +255,7 @@ string SheetController::berekenSom(Sheet &sheet, Range range, vector<CellAdress>
         return "ERR";
     }
 }
+
 // berekent het gemiddelde van alle cellen in een Range
 // als daarin formules zitten worden die eerst opnieuw berekent
 string SheetController::berekenAvg(Sheet &sheet, Range range, vector<CellAdress> vecCa)
@@ -302,6 +313,7 @@ string SheetController::berekenAvg(Sheet &sheet, Range range, vector<CellAdress>
         return "ERR";
     }
 }
+
 // telt hoeveel cellen exclusief nummers bevatten in een
 // range
 string SheetController::berekenCount(Sheet &sheet, Range range, vector<CellAdress> vecCa)
@@ -349,25 +361,15 @@ string SheetController::berekenCount(Sheet &sheet, Range range, vector<CellAdres
     }
 }
 
+// bewerkt cel, dmv nieuw scherm
 void SheetController::celbewerking(Sheet &sheet, SheetView &s)
 {
-    //methode nieuwe window
-    //int x = getchar
     std::vector<int> vec;
-    WINDOW *win = s.getWindow();
+    string inhoud = "";
     vec = s.getCursor();
-    WINDOW *popup = newwin(3, 19, 1, 1);
-    mvwin(popup, vec.at(0), vec.at(1) * 8 + 3);
-    wmove(popup, 1, 1);
-    wborder(popup, '|', '|', '-', '-', '+', '+', '+', '+');
-    wrefresh(popup);
+   
 
-    // input van user naar cell en display ook pak oude en plaats
-    string input = "";
-    Cell *d = sheet.getCell(vec.at(0), vec.at(1));
-    string inhoud = d->getString();
-    wmove(popup, 1, 1);
-    inputPrompt(popup, win, inhoud);
+    prompt(sheet, s, inhoud, false);
 
     CellValueBase *y;
     if (inhoud != "" && inhoud.at(0) == '=')
